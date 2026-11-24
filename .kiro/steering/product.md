@@ -20,7 +20,10 @@ local fallback.
 
 ## Audience and language
 - Judges are international: `README.md` and everything under `.kiro/` are written in English.
-- USSD menus use authentic Cameroonian French (Douala / Yaounde, FCFA, Sandaga / Mfoundi markets), transliterated to GSM-7.
+- USSD menus use Cameroonian English (`en-CM`; Cameroon is officially bilingual) so judges can read
+  every screen, with authentic local references (Douala / Yaounde, FCFA, Sandaga / Mfoundi markets,
+  njangi groups), transliterated to GSM-7.
+- Language lives only in manifests and app data: switching an app to French never touches `core/`.
 
 ## Demo promise
 A judge must be able to run a full USSD flow in under 15 seconds, without a SIM card and

@@ -8,79 +8,79 @@
     "bamenda": "Bamenda"
   },
   "products": {
-    "plantain": { "label": "Plantain", "unit": "regime" },
-    "manioc": { "label": "Manioc", "unit": "sac 50kg" },
-    "macabo": { "label": "Macabo", "unit": "filet 25kg" },
-    "huile_palme": { "label": "Huile de palme", "unit": "litre" },
-    "cacao": { "label": "Cacao", "unit": "kg" }
+    "plantain": { "label": "Plantain", "unit": "bunch" },
+    "cassava": { "label": "Cassava", "unit": "50kg bag" },
+    "cocoyam": { "label": "Cocoyam", "unit": "25kg net" },
+    "palm_oil": { "label": "Palm oil", "unit": "litre" },
+    "cocoa": { "label": "Cocoa", "unit": "kg" }
   },
   "prices": {
     "sandaga": {
       "plantain": { "price": 4500, "trend": "+5%" },
-      "manioc": { "price": 12000, "trend": "stable" },
-      "macabo": { "price": 11000, "trend": "+3%" },
-      "huile_palme": { "price": 1250, "trend": "+8%" },
-      "cacao": { "price": 4800, "trend": "-2%" }
+      "cassava": { "price": 12000, "trend": "stable" },
+      "cocoyam": { "price": 11000, "trend": "+3%" },
+      "palm_oil": { "price": 1250, "trend": "+8%" },
+      "cocoa": { "price": 4800, "trend": "-2%" }
     },
     "mfoundi": {
       "plantain": { "price": 4000, "trend": "stable" },
-      "manioc": { "price": 10500, "trend": "-3%" },
-      "macabo": { "price": 10000, "trend": "stable" },
-      "huile_palme": { "price": 1200, "trend": "+4%" },
-      "cacao": { "price": 4900, "trend": "-1%" }
+      "cassava": { "price": 10500, "trend": "-3%" },
+      "cocoyam": { "price": 10000, "trend": "stable" },
+      "palm_oil": { "price": 1200, "trend": "+4%" },
+      "cocoa": { "price": 4900, "trend": "-1%" }
     },
     "bafoussam": {
       "plantain": { "price": 3500, "trend": "-4%" },
-      "manioc": { "price": 9000, "trend": "stable" },
-      "macabo": { "price": 8500, "trend": "-5%" },
-      "huile_palme": { "price": 1300, "trend": "+6%" },
-      "cacao": { "price": 4700, "trend": "stable" }
+      "cassava": { "price": 9000, "trend": "stable" },
+      "cocoyam": { "price": 8500, "trend": "-5%" },
+      "palm_oil": { "price": 1300, "trend": "+6%" },
+      "cocoa": { "price": 4700, "trend": "stable" }
     },
     "bamenda": {
       "plantain": { "price": 3800, "trend": "+2%" },
-      "manioc": { "price": 9500, "trend": "+1%" },
-      "macabo": { "price": 9000, "trend": "stable" },
-      "huile_palme": { "price": 1350, "trend": "+10%" },
-      "cacao": { "price": 4600, "trend": "-3%" }
+      "cassava": { "price": 9500, "trend": "+1%" },
+      "cocoyam": { "price": 9000, "trend": "stable" },
+      "palm_oil": { "price": 1350, "trend": "+10%" },
+      "cocoa": { "price": 4600, "trend": "-3%" }
     }
   },
   "cocoa": {
-    "black_pod": "Pourriture brune (Phytophthora). Retirer et enterrer les cabosses atteintes sous 48h. Traiter au fongicide cuivre tous les 15 jours en saison des pluies. Prevention: elaguer, drainer, recolter souvent.",
-    "mirids": "Capsides (mirides): insectes piqueurs-suceurs. Traiter avec un insecticide homologue en juillet-aout puis octobre. Surveiller les jeunes pousses chaque semaine. Prevention: ombrage regule.",
-    "swollen_shoot": "Suspicion swollen shoot (virus CSSV, transmis par cochenilles). Pas de traitement curatif. Arracher et bruler les pieds atteints et voisins. Replanter des varietes tolerantes. Alerter le poste agricole."
+    "black_pod": "Black pod rot (Phytophthora). Remove and bury infected pods within 48h. Spray copper fungicide every 15 days in the rainy season. Prevention: prune, drain, harvest every 2 weeks and bury pod husks.",
+    "mirids": "Mirids (capsids): sap-sucking insects. Spray an approved insecticide in July-August, then October. Check young shoots every week. Prevention: managed shade.",
+    "swollen_shoot": "Suspected swollen shoot (CSSV virus, spread by mealybugs). No cure. Uproot and burn infected and neighbouring trees. Replant tolerant varieties. Alert the farm post."
   },
   "weather": {
-    "littoral": { "label": "Littoral", "rain": "Pluies fortes 35mm", "humidity": 88, "advice": "Pas de sechage au soleil. Traitement fongique apres 18h si pas de pluie." },
-    "centre": { "label": "Centre", "rain": "Averses 12mm", "humidity": 79, "advice": "Sechage cacao possible demain matin. Fenetre de traitement 6h-10h." },
-    "ouest": { "label": "Ouest", "rain": "Faible 4mm", "humidity": 70, "advice": "Bonne fenetre pour semis et epandage. Arroser les pepinieres." },
-    "sud_ouest": { "label": "Sud-Ouest", "rain": "Orages 28mm", "humidity": 86, "advice": "Proteger les recoltes. Reporter les traitements de 24h." }
+    "littoral": { "label": "Littoral", "rain": "Heavy rain 35mm", "humidity": 88, "advice": "No sun drying. Spray fungicide after 6pm if dry." },
+    "centre": { "label": "Centre", "rain": "Showers 12mm", "humidity": 79, "advice": "Cocoa drying possible tomorrow morning. Spraying window 6am-10am." },
+    "west": { "label": "West", "rain": "Light 4mm", "humidity": 70, "advice": "Good window for sowing and fertilising. Water the nurseries." },
+    "south_west": { "label": "South-West", "rain": "Storms 28mm", "humidity": 86, "advice": "Protect harvests. Delay spraying by 24h." }
   },
   "advice": [
     {
-      "keywords": ["manioc", "cassava"],
-      "symptoms": ["tache", "blanc", "mosaique", "jaune", "feuille"],
-      "answer": "Manioc: taches ou mosaique sur feuilles = probable mosaique ou cercosporiose. Arracher les plants tres atteints, utiliser des boutures saines de variete tolerante, eviter de replanter au meme endroit. Demander conseil au delegue agricole."
+      "keywords": ["cassava", "manioc"],
+      "symptoms": ["spot", "white", "mosaic", "yellow", "leaf", "leav"],
+      "answer": "Cassava: spots or mosaic on leaves = likely mosaic disease or leaf spot. Uproot badly hit plants, use healthy cuttings of a tolerant variety, do not replant in the same spot. Ask the farm extension officer."
     },
     {
-      "keywords": ["cacao", "cabosse"],
-      "symptoms": ["noir", "brun", "pourri", "tache", "trou"],
-      "answer": "Cacao: cabosses noires = pourriture brune probable. Enlever les cabosses malades, traiter au fongicide cuivre tous les 15 jours en pluie, elaguer pour aerer la plantation."
+      "keywords": ["cocoa", "cacao", "pod"],
+      "symptoms": ["black", "brown", "rot", "spot", "hole"],
+      "answer": "Cocoa: black pods = likely black pod rot. Remove sick pods, spray copper fungicide every 15 days in the rains, prune to let air through the farm."
     },
     {
-      "keywords": ["plantain", "banane", "bananier"],
-      "symptoms": ["raie", "noir", "jaune", "feuille", "tache", "fletri"],
-      "answer": "Plantain: raies noires sur feuilles = cercosporiose noire probable. Couper et bruler les feuilles atteintes, espacer les pieds, apporter de la matiere organique. Eviter les rejets de plants malades."
+      "keywords": ["plantain", "banana"],
+      "symptoms": ["streak", "black", "yellow", "leaf", "leav", "spot", "wilt"],
+      "answer": "Plantain: black streaks on leaves = likely black Sigatoka. Cut and burn infected leaves, space the plants, add organic matter. Avoid suckers from sick plants."
     },
     {
-      "keywords": ["mais"],
-      "symptoms": ["chenille", "trou", "feuille", "ver"],
-      "answer": "Mais: trous et sciure dans le cornet = chenille legionnaire probable. Inspecter 2 fois par semaine, ramasser a la main ou appliquer un traitement homologue tot le matin."
+      "keywords": ["maize", "corn"],
+      "symptoms": ["caterpillar", "hole", "leaf", "leav", "worm"],
+      "answer": "Maize: holes and frass in the whorl = likely fall armyworm. Inspect twice a week, hand-pick or apply an approved treatment early in the morning."
     },
     {
-      "keywords": ["tomate"],
-      "symptoms": ["tache", "fletri", "brun", "pourri"],
-      "answer": "Tomate: taches brunes et fletrissement = mildiou probable. Retirer les feuilles atteintes, eviter l'arrosage des feuilles, traiter au fongicide cuivre et alterner les cultures."
+      "keywords": ["tomato"],
+      "symptoms": ["spot", "wilt", "brown", "rot"],
+      "answer": "Tomato: brown spots and wilting = likely late blight. Remove infected leaves, do not wet the leaves when watering, spray copper fungicide and rotate crops."
     }
   ],
-  "defaultAdvice": "Conseil general: isoler les plants malades, eviter de replanter au meme endroit, utiliser des semences saines. Envoyez une photo au delegue agricole de votre arrondissement."
+  "defaultAdvice": "General advice: isolate sick plants, do not replant in the same spot, use healthy seed. Send a photo to the farm extension officer of your district."
 }

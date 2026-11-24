@@ -1,10 +1,10 @@
 {
   "_note": "Demo data for a fictional njangi group. The receipt secret is a demo value, not a real key.",
   "group": {
-    "name": "Njangi Solidarite Akwa",
+    "name": "Akwa Solidarity Njangi",
     "contribution": 25000,
     "members": 12,
-    "frequency": "mensuelle"
+    "frequency": "monthly"
   },
   "rules": {
     "penaltyRatePerDay": 0.02,
@@ -12,17 +12,17 @@
     "article": "Art.7"
   },
   "members": {
-    "M01": { "name": "Ngo Bassong Marie", "rank": 1, "turnDate": "06/09/2026", "received": true, "status": "A JOUR", "seniorityMonths": 26 },
-    "M02": { "name": "Fotso Jean-Paul", "rank": 4, "turnDate": "07/12/2026", "received": false, "status": "RETARD", "seniorityMonths": 14 },
-    "M03": { "name": "Mbarga Aline", "rank": 5, "turnDate": "04/01/2027", "received": false, "status": "A JOUR", "seniorityMonths": 30 },
-    "M04": { "name": "Tchakounte Herve", "rank": 8, "turnDate": "05/04/2027", "received": false, "status": "A JOUR", "seniorityMonths": 2 },
-    "M05": { "name": "Ekane Solange", "rank": 10, "turnDate": "07/06/2027", "received": false, "status": "A JOUR", "seniorityMonths": 18 }
+    "M01": { "name": "Ngo Bassong Marie", "rank": 1, "turnDate": "06/09/2026", "received": true, "status": "UP TO DATE", "seniorityMonths": 26 },
+    "M02": { "name": "Fotso Jean-Paul", "rank": 4, "turnDate": "07/12/2026", "received": false, "status": "LATE", "seniorityMonths": 14 },
+    "M03": { "name": "Mbarga Aline", "rank": 5, "turnDate": "04/01/2027", "received": false, "status": "UP TO DATE", "seniorityMonths": 30 },
+    "M04": { "name": "Tchakounte Herve", "rank": 8, "turnDate": "05/04/2027", "received": false, "status": "UP TO DATE", "seniorityMonths": 2 },
+    "M05": { "name": "Ekane Solange", "rank": 10, "turnDate": "07/06/2027", "received": false, "status": "UP TO DATE", "seniorityMonths": 18 }
   },
   "relief": {
     "balance": 840000,
     "upToDate": 11,
     "minSeniorityMonths": 3,
-    "caps": { "maladie": 100000, "deces": 250000, "naissance": 50000 }
+    "caps": { "illness": 100000, "death": 250000, "birth": 50000 }
   },
   "receiptSecret": "njangi-akwa-demo-2026",
   "receipts": {

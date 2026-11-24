@@ -37,12 +37,12 @@ def test_home_key_clears_stack(dial) -> None:
 def test_invalid_choice_keeps_node_and_shows_notice(dial) -> None:
     frame = dial(AGRI, "7")
     assert frame.current_node == "home" and frame.prefix == "CON"
-    assert frame.body.startswith("Choix invalide.")
+    assert frame.body.startswith("Invalid choice.")
 
 
 def test_back_label_on_child_screens_only(dial) -> None:
-    assert "0. Retour" not in dial(AGRI).body
-    assert dial(AGRI, "1").body.endswith("0. Retour")
+    assert "0. Back" not in dial(AGRI).body
+    assert dial(AGRI, "1").body.endswith("0. Back")
 
 
 def test_cumulative_replay_equals_step_by_step(dial) -> None:
@@ -76,26 +76,26 @@ def test_diverged_history_restarts_and_replays(dial) -> None:
 
 def test_next_page_then_end_deletes_session(dial, engine) -> None:
     first = dial(AGRI, "2*1")
-    assert first.prefix == "CON" and first.total_pages == 2 and first.body.endswith("99. Suite")
+    assert first.prefix == "CON" and first.total_pages == 2 and first.body.endswith("99. More")
     last = dial(AGRI, "2*1*99")
     assert last.prefix == "END" and last.page_index == 1
     assert engine.store.load("s1") is None
 
 
 def test_next_page_key_without_more_pages_is_invalid(dial) -> None:
-    assert dial(AGRI, "99").body.startswith("Choix invalide.")
+    assert dial(AGRI, "99").body.startswith("Invalid choice.")
 
 
 def test_input_validation_error_message(dial) -> None:
     frame = dial("*384*2#", "2*abc")
-    assert frame.current_node == "penalty_amount" and frame.body.startswith("Montant invalide")
+    assert frame.current_node == "penalty_amount" and frame.body.startswith("Invalid amount")
     frame = dial("*384*2#", "2*100", sid="low")
     assert frame.current_node == "penalty_amount"
 
 
 def test_numeric_input_is_stored_as_number(dial) -> None:
     frame = dial("*384*2#", "2*25000")
-    assert frame.context["amount"] == 25000 and "Montant: 25000 FCFA" in frame.body
+    assert frame.context["amount"] == 25000 and "Amount: 25000 FCFA" in frame.body
 
 
 def test_code_input_is_upper_cased(dial) -> None:
@@ -106,7 +106,7 @@ def test_session_expires_after_timeout(dial, clock, engine) -> None:
     dial(AGRI, "1")
     clock.advance(181)
     frame = dial(AGRI, "1*1")
-    assert frame.prefix == "END" and "Session expiree" in frame.body
+    assert frame.prefix == "END" and "Session expired" in frame.body
     assert engine.store.load("s1") is None
 
 
@@ -134,22 +134,22 @@ def test_handler_exception_ends_with_error_message(make_app) -> None:
     manifest = minimal_manifest(nodes={
         "home": {"type": "menu", "title": "Demo", "options": [{"key": "1", "label": "Go", "next": "act"}]},
         "act": {"type": "action", "handler": "explode"},
-    }, navigation={"errorMessage": "Panne."})
+    }, navigation={"errorMessage": "Down."})
     app_dir = make_app(manifest, "def explode(context, data):\n    raise RuntimeError('bug')\n")
     registry = AppRegistry(app_dir.parent, SCHEMA).load()
     frame = asyncio.run(SessionEngine(SessionStore()).handle(registry.resolve("demo"), "x", "", "1"))
-    assert frame.raw_response == "END Panne."
+    assert frame.raw_response == "END Down."
 
 
 def test_static_node_interpolates_context(make_app) -> None:
     manifest = minimal_manifest(nodes={
         "home": {"type": "menu", "title": "Demo", "options": [
             {"key": "1", "label": "Go", "next": "done", "set": {"who": "Douala"}}]},
-        "done": {"type": "static", "text": "Bonjour {who} {missing}", "end": True},
+        "done": {"type": "static", "text": "Hello {who} {missing}", "end": True},
     })
     registry = AppRegistry(make_app(manifest).parent, SCHEMA).load()
     frame = asyncio.run(SessionEngine(SessionStore()).handle(registry.resolve("*999#"), "x", "", "1"))
-    assert frame.raw_response == "END Bonjour Douala (missing)"
+    assert frame.raw_response == "END Hello Douala (missing)"
 
 
 @pytest.mark.parametrize("mutate, message", [

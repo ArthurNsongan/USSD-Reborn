@@ -27,7 +27,7 @@ flowchart LR
   "tagline": "One sentence",
   "shortcode": "*384*9#",
   "version": "1.0.0",
-  "locale": "fr-CM",
+  "locale": "en-CM",
   "entryNode": "home",
   "theme": {
     "primaryColor": "#16a34a", "accentColor": "#86efac",
@@ -36,17 +36,17 @@ flowchart LR
   },
   "navigation": {
     "backKey": "0", "homeKey": "00", "nextPageKey": "99", "sessionTimeoutSec": 180,
-    "nextPageLabel": "99. Suite", "backLabel": "0. Retour",
-    "invalidMessage": "Choix invalide.", "expiredMessage": "Session expiree.",
-    "errorMessage": "Service indisponible."
+    "nextPageLabel": "99. More", "backLabel": "0. Back",
+    "invalidMessage": "Invalid choice.", "expiredMessage": "Session expired.",
+    "errorMessage": "Service unavailable."
   },
-  "compression": { "abbreviations": { "Kilogramme": "kg" } },
+  "compression": { "abbreviations": { "kilogram": "kg" } },
   "quickPresets": [{ "label": "Flow 1", "inputs": "1*1" }],
   "nodes": {
     "home": { "type": "menu", "title": "My App", "options": [
       { "key": "1", "label": "Ask", "next": "ask", "set": { "topic": "a" } }
     ]},
-    "ask": { "type": "input", "prompt": "Votre code:", "saveAs": "code", "next": "answer",
+    "ask": { "type": "input", "prompt": "Your code:", "saveAs": "code", "next": "answer",
              "validation": { "kind": "code", "pattern": "^[A-Z0-9-]{3,12}$" }, "example": "AB-12" },
     "answer": { "type": "action", "handler": "lookup", "useAiCompression": true, "end": true }
   }

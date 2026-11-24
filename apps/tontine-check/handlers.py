@@ -17,14 +17,14 @@ def _member(context: dict, data: dict) -> tuple[str, dict | None]:
 def member_turn(context: dict, data: dict) -> dict:
     code, member = _member(context, data)
     if member is None:
-        return {"text": f"Membre {code} inconnu dans {data['group']['name']}.", "end": True}
+        return {"text": f"Member {code} not found in {data['group']['name']}.", "end": True}
     group = data["group"]
     pot = group["contribution"] * group["members"]
-    when = f"recu le {member['turnDate']}" if member["received"] else f"le {member['turnDate']}"
+    when = f"paid on {member['turnDate']}" if member["received"] else f"on {member['turnDate']}"
     text = (f"{code} {member['name']}\n"
-            f"Tour {member['rank']}/{group['members']} {when}\n"
-            f"Cagnotte: {_fcfa(pot)}\n"
-            f"Cotisation: {member['status']}")
+            f"Turn {member['rank']}/{group['members']} {when}\n"
+            f"Pot: {_fcfa(pot)}\n"
+            f"Contributions: {member['status']}")
     return {"text": text, "end": True, "context": {"member_name": member["name"]}}
 
 
@@ -35,37 +35,37 @@ def compute_penalty(context: dict, data: dict) -> dict:
     raw = amount * rules["penaltyRatePerDay"] * days
     cap = amount * rules["penaltyCapRatio"]
     penalty = round(min(raw, cap))
-    capped = " (plafond)" if raw > cap else ""
-    text = (f"Cotisation: {_fcfa(amount)}\n"
-            f"Retard: {days} j x {rules['penaltyRatePerDay'] * 100:g}%/j\n"
-            f"Penalite: {_fcfa(penalty)}{capped}\n"
-            f"Total a verser: {_fcfa(amount + penalty)}\n"
-            f"{rules['article']}: regler avant la prochaine seance.")
+    capped = " (cap)" if raw > cap else ""
+    text = (f"Contribution: {_fcfa(amount)}\n"
+            f"Late: {days} d x {rules['penaltyRatePerDay'] * 100:g}%/d\n"
+            f"Penalty: {_fcfa(penalty)}{capped}\n"
+            f"Total due: {_fcfa(amount + penalty)}\n"
+            f"{rules['article']}: pay before the next meeting.")
     return {"text": text, "end": True, "context": {"penalty": penalty}}
 
 
 def relief_summary(context: dict, data: dict) -> dict:
     relief, group = data["relief"], data["group"]
     caps = relief["caps"]
-    text = (f"Caisse de secours: {_fcfa(relief['balance'])}\n"
-            f"A jour: {relief['upToDate']}/{group['members']} membres\n"
-            f"Aide max: maladie {caps['maladie'] // 1000}k, deces {caps['deces'] // 1000}k, "
-            f"naissance {caps['naissance'] // 1000}k")
+    text = (f"Relief fund: {_fcfa(relief['balance'])}\n"
+            f"Up to date: {relief['upToDate']}/{group['members']} members\n"
+            f"Max aid: illness {caps['illness'] // 1000}k, death {caps['death'] // 1000}k, "
+            f"birth {caps['birth'] // 1000}k")
     return {"text": text, "end": False}
 
 
 def check_relief_eligibility(context: dict, data: dict) -> dict:
     code, member = _member(context, data)
     if member is None:
-        return {"text": f"Membre {code} inconnu.", "end": True}
+        return {"text": f"Member {code} not found.", "end": True}
     relief = data["relief"]
     reasons = []
-    if member["status"] != "A JOUR":
-        reasons.append("cotisations en retard")
+    if member["status"] != "UP TO DATE":
+        reasons.append("late contributions")
     if member["seniorityMonths"] < relief["minSeniorityMonths"]:
-        reasons.append(f"anciennete {member['seniorityMonths']} mois (min {relief['minSeniorityMonths']})")
-    verdict = "ELIGIBLE" if not reasons else "NON ELIGIBLE: " + ", ".join(reasons)
-    return {"text": f"{code} {member['name']}\nAide d'urgence: {verdict}", "end": True}
+        reasons.append(f"seniority {member['seniorityMonths']} months (min {relief['minSeniorityMonths']})")
+    verdict = "ELIGIBLE" if not reasons else "NOT ELIGIBLE: " + ", ".join(reasons)
+    return {"text": f"{code} {member['name']}\nEmergency aid: {verdict}", "end": True}
 
 
 def _fingerprint(code: str, receipt: dict, secret: str) -> str:
@@ -78,12 +78,12 @@ def verify_receipt(context: dict, data: dict) -> dict:
     code = str(context.get("receipt_code", "")).upper()
     receipt = data["receipts"].get(code)
     if receipt is None:
-        return {"text": f"Quittance {code}: INCONNUE.\nNe pas accepter ce recu.", "end": True}
+        return {"text": f"Receipt {code}: UNKNOWN.\nDo not accept this receipt.", "end": True}
     valid = hmac.compare_digest(_fingerprint(code, receipt, data["receiptSecret"]), receipt["fingerprint"])
     member = data["members"].get(receipt["member"], {}).get("name", receipt["member"])
-    status = "VALIDE" if valid else "ALTEREE (empreinte fausse)"
-    text = (f"Quittance {code}\n"
-            f"Membre: {receipt['member']} {member}\n"
-            f"Montant: {_fcfa(receipt['amount'])} le {receipt['date']}\n"
-            f"Statut: {status}")
+    status = "VALID" if valid else "TAMPERED (bad fingerprint)"
+    text = (f"Receipt {code}\n"
+            f"Member: {receipt['member']} {member}\n"
+            f"Amount: {_fcfa(receipt['amount'])} on {receipt['date']}\n"
+            f"Status: {status}")
     return {"text": text, "end": True, "context": {"receipt_valid": valid}}

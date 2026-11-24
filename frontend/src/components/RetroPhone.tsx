@@ -145,7 +145,7 @@ export function RetroPhone({ app, frame, busy, lastActivity, error, idleMessage,
 
         <div className="h-[230px] overflow-y-auto py-2 text-[21px] leading-[1.08]" aria-live="polite">
           {busy && !frame ? (
-            <p className="animate-pulse">Envoi USSD...</p>
+            <p className="animate-pulse">Sending USSD...</p>
           ) : frame ? (
             <pre className="whitespace-pre-wrap break-words font-[inherit]">{frame.body}</pre>
           ) : (

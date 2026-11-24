@@ -19,6 +19,12 @@ and a deterministic local fallback kicks in whenever the LLM is missing or slow.
 
 Both apps run on the same skeleton. Neither one needs a single line in `core/`.
 
+Both apps speak Cameroonian English (`en-CM`; Cameroon is officially bilingual) with real local
+references: Douala Sandaga and Yaounde Mfoundi markets, FCFA, njangi savings groups. Every user-facing
+string, including the `99. More`, `0. Back` and `Invalid choice.` labels, lives in the manifests.
+A French (`fr-CM`) version of an app is a copy of its `apps/` folder with a new id, shortcode and
+translated text, with no change to `core/`.
+
 ## Quickstart (about 2 minutes, no SIM card or API key needed)
 
 ```bash
@@ -44,11 +50,11 @@ curl -X POST http://127.0.0.1:8000/ussd \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   --data-urlencode 'sessionId=ATUid_1' --data-urlencode 'serviceCode=*384*2#' \
   --data-urlencode 'phoneNumber=+237690000000' --data-urlencode 'text=2*25000*5'
-# END Cotisation: 25 000 FCFA
-# Retard: 5 j x 2%/j
-# Penalite: 2 500 FCFA
-# Total a verser: 27 500 FCFA
-# Art.7: regler avant la prochaine seance.
+# END Contribution: 25 000 FCFA
+# Late: 5 d x 2%/d
+# Penalty: 2 500 FCFA
+# Total due: 27 500 FCFA
+# Art.7: pay before the next meeting.
 ```
 `bash scripts/demo_curl.sh` replays complete sessions. To go live, point an Africa's Talking USSD
 channel callback at `https://<your-host>/ussd`.
@@ -90,7 +96,7 @@ flowchart LR
 A logical line is not blank, not a comment, and not inside a docstring, which is how cloc counts Python.
 
 ### Protocol guarantees
-- The prefix is always `CON ` or `END `, and the full frame is at most 160 characters including the `99. Suite` footer.
+- The prefix is always `CON ` or `END `, and the full frame is at most 160 characters including the `99. More` footer.
 - Only the GSM-7 basic alphabet goes out. Accents, ligatures, typographic quotes, `€` and emojis are transliterated or dropped. Escape characters (`[ ] { } \ ^ ~ |`) are never emitted because each one costs two septets.
 - `0` goes back, `00` goes home, `99` shows the next page. Invalid input re-renders the screen with a short notice.
 - Africa's Talking sends the cumulative text (`1*2*1`). The engine diffs it against the previous request and replays it when the history diverges, so cumulative and step-by-step input give byte-identical frames (this is tested).
@@ -101,12 +107,12 @@ A logical line is not blank, not a comment, and not inside a docstring, which is
    ```json
    {
      "id": "my-app", "name": "MyApp", "tagline": "...", "shortcode": "*384*3#",
-     "version": "1.0.0", "locale": "fr-CM", "entryNode": "home",
+     "version": "1.0.0", "locale": "en-CM", "entryNode": "home",
      "theme": { "primaryColor": "#0891b2", "accentColor": "#a5f3fc", "screenBg": "#03141a",
                 "screenText": "#5eead4", "bezelColor": "#0f1f24", "badgeLabel": "APP 3", "icon": "💧" },
      "nodes": {
        "home": { "type": "menu", "title": "MyApp", "options": [{ "key": "1", "label": "Info", "next": "info" }] },
-       "info": { "type": "static", "text": "Buvez 2L d'eau par jour.", "end": true }
+       "info": { "type": "static", "text": "Drink 2L of water a day.", "end": true }
      }
    }
    ```
@@ -168,7 +174,7 @@ cd frontend && npm run build              # TypeScript strict + Vite production 
 | `LLM_MODEL` / `LLM_BASE_URL` | preset | Override the model or point to any OpenAI-compatible endpoint |
 | `LLM_TIMEOUT_SEC` | `1.8` | Hard deadline before the local fallback |
 
-Only nodes with `useAiCompression: true` (AgriPulse "Conseil IA rapide") ever call the LLM, and only
+Only nodes with `useAiCompression: true` (AgriPulse "Quick AI advice") ever call the LLM, and only
 when their text does not fit the screen.
 
 ## Data disclaimer

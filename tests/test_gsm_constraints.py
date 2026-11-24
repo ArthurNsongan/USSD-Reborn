@@ -10,9 +10,9 @@ from core import gsm_compressor
 from core.gsm_compressor import BODY_BUDGET, abbreviate, compress, is_gsm7, paginate, to_gsm7
 from scripts.validate_manifests import validate_all
 
-FOOTER = "\n99. Suite"
-WORDS = ("plan", "marche", "pluie", "recolte", "cooperative", "village", "Douala", "prix", "semaine",
-         "traitement", "x", "1250", "humidite", "conseil")
+FOOTER = "\n99. More"
+WORDS = ("plan", "market", "rain", "harvest", "cooperative", "village", "Douala", "price", "week",
+         "treatment", "x", "1250", "humidity", "advice")
 
 
 def _random_text(length: int, seed: int) -> str:
@@ -23,7 +23,7 @@ def _random_text(length: int, seed: int) -> str:
 
 
 def test_transliterates_accents_ligatures_and_typography() -> None:
-    assert to_gsm7("Récolte à Yaoundé – cœur “bio” 5 €") == "Recolte a Yaounde - coeur \"bio\" 5 EUR"
+    assert to_gsm7("Café crème à Yaoundé – cœur “bio” 5 €") == "Cafe creme a Yaounde - coeur \"bio\" 5 EUR"
 
 
 def test_drops_emojis_and_gsm7_extension_characters() -> None:
@@ -57,12 +57,12 @@ def test_pagination_hard_cuts_a_single_huge_word() -> None:
 
 
 def test_abbreviations_are_whole_word_and_keep_sentence_case() -> None:
-    text = abbreviate("Traitement du traitementX. Pour le traitement.", {"traitement": "trait.", "pour": "pr"})
-    assert text == "Trait. du traitementX. Pr le trait.."
+    text = abbreviate("Treatment of treatmentX. With the treatment.", {"treatment": "treat.", "with": "w/"})
+    assert text == "Treat. of treatmentX. W/ the treat.."
 
 
 def _compress(text: str, budget: int = BODY_BUDGET, use_ai: bool = True):
-    return asyncio.run(compress(text, budget, use_ai, {"semaine": "sem."}))
+    return asyncio.run(compress(text, budget, use_ai, {"weeks": "wks"}))
 
 
 def test_short_text_is_sent_direct() -> None:
@@ -71,9 +71,9 @@ def test_short_text_is_sent_direct() -> None:
 
 
 def test_long_text_without_key_uses_deterministic_fallback() -> None:
-    content, telemetry = _compress("Une semaine " * 30)
+    content, telemetry = _compress("Two weeks " * 30)
     assert telemetry["mode"] == "deterministic_fallback" and telemetry["fallback_reason"] == "no_api_key"
-    assert "sem." in content and "semaine" not in content
+    assert "wks" in content and "weeks" not in content
 
 
 def test_ai_disabled_on_node_never_calls_llm(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -90,10 +90,10 @@ def test_llm_success_is_used_when_it_fits(monkeypatch: pytest.MonkeyPatch) -> No
     monkeypatch.setenv("LLM_API_KEY", "test")
 
     async def fake(text: str, budget: int) -> str:
-        return "Résumé court: 3 conseils clés."
+        return "Short résumé: 3 key tips – done."
     monkeypatch.setattr(gsm_compressor, "_ask_llm", fake)
-    content, telemetry = _compress("mot " * 100)
-    assert telemetry["mode"] == "ai" and content == "Resume court: 3 conseils cles."
+    content, telemetry = _compress("word " * 100)
+    assert telemetry["mode"] == "ai" and content == "Short resume: 3 key tips - done."
 
 
 def test_llm_timeout_falls_back_within_deadline(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -104,7 +104,7 @@ def test_llm_timeout_falls_back_within_deadline(monkeypatch: pytest.MonkeyPatch)
         await asyncio.sleep(5)
         return "too late"
     monkeypatch.setattr(gsm_compressor, "_ask_llm", slow)
-    _, telemetry = _compress("mot " * 100)
+    _, telemetry = _compress("word " * 100)
     assert telemetry["mode"] == "deterministic_fallback" and telemetry["fallback_reason"] == "timeout"
     assert telemetry["latency_ms"] < 1500
 
@@ -116,7 +116,7 @@ def test_llm_unusable_answer_falls_back(monkeypatch: pytest.MonkeyPatch, answer,
     async def fake(text: str, budget: int):
         return answer
     monkeypatch.setattr(gsm_compressor, "_ask_llm", fake)
-    _, telemetry = _compress("mot " * 100)
+    _, telemetry = _compress("word " * 100)
     assert telemetry["mode"] == "deterministic_fallback" and telemetry["fallback_reason"] == reason
 
 
@@ -126,7 +126,7 @@ def test_llm_network_error_falls_back(monkeypatch: pytest.MonkeyPatch) -> None:
     async def broken(text: str, budget: int):
         raise ConnectionError("no network on 2G")
     monkeypatch.setattr(gsm_compressor, "_ask_llm", broken)
-    _, telemetry = _compress("mot " * 100)
+    _, telemetry = _compress("word " * 100)
     assert telemetry["fallback_reason"] == "llm_error"
 
 

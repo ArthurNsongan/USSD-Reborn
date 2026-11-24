@@ -7,7 +7,8 @@ inclusion: always
 1. Every USSD frame starts with exactly `CON ` (session continues) or `END ` (session closes).
 2. A full frame, prefix and pagination footer included, is at most **160 characters**.
    - Body budget: `160 - len("CON ")` = 156 characters.
-   - Intermediate pages end with `\n99. Suite`, so their body budget is 146 characters.
+   - Intermediate pages end with `\n` + the manifest `nextPageLabel` (`\n99. More` in both apps),
+     so their body budget is 156 minus that footer (147 characters).
 3. Only GSM-7 basic-alphabet characters are emitted (one septet each):
    printable ASCII minus `` ` `` and the extension characters `[ ] { } \ ^ ~ |`, plus `\n`.
    - Transliterate accents (`e`-acute to `e`, `a`-grave to `a`, `c`-cedilla to `c`, `oe` ligature to `oe`).

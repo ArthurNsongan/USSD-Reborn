@@ -18,12 +18,13 @@ MAX_LOC = 400
 FORBIDDEN_TERMS: tuple[str, ...] = (
     # agriculture / food markets
     "agri", "cacao", "cocoa", "plantain", "manioc", "cassava", "macabo", "palme", "vivre",
-    "recolte", "harvest", "farmer", "meteo", "capside",
+    "recolte", "harvest", "farmer", "meteo", "capside", "cocoyam", "mirid", "fungicide",
     # Cameroonian places and currency
     "sandaga", "mfoundi", "bafoussam", "bamenda", "douala", "yaounde", "littoral",
     "fcfa", "xaf",
     # community finance
     "tontine", "cotisation", "quittance", "penalite", "beneficiaire", "cagnotte", "caisse",
+    "njangi", "payout",
     # health
     "pharmacie", "pharmacy", "mediguide", "posologie", "dosage", "medic",
 )

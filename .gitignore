@@ -164,3 +164,8 @@ ehthumbs.db
 Desktop.ini
 desktop.ini
 $RECYCLE.BIN/
+
+# --- Local French planning drafts (kept on disk, not published) ---
+IMPLEMENTATION_PLAN.md
+ussd-reborn.md
+ussd-skeleton-crew.md

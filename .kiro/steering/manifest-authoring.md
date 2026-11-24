@@ -16,7 +16,7 @@ An app is a folder `apps/<app_id>/` with:
 - `theme`: `primaryColor`, `accentColor`, `screenBg`, `screenText`, `bezelColor`, `badgeLabel`, `icon`.
 - `quickPresets`: `[{ "label": "...", "inputs": "1*1*1" }]` for one-click demos.
 - `navigation`: `backKey` (`0`), `homeKey` (`00`), `nextPageKey` (`99`), `sessionTimeoutSec`,
-  plus localized `nextPageLabel`, `backLabel`, `homeLabel`, `invalidMessage`, `expiredMessage`.
+  plus localized `nextPageLabel`, `backLabel`, `invalidMessage`, `expiredMessage`, `errorMessage`.
 - `compression.abbreviations`: word replacements used only by the deterministic fallback.
 
 ## Node types
@@ -29,8 +29,10 @@ An app is a folder `apps/<app_id>/` with:
 
 ## Rules
 - Keys `0`, `00`, `99` are reserved: never use them as option keys.
-- Write in Cameroonian French but GSM-7 only: no accents in source text is preferred
-  (the compressor transliterates anyway), no emojis.
+- Write in Cameroonian English (`locale: "en-CM"`) so international judges can read every screen,
+  keeping real local references (Sandaga, Mfoundi, Bamenda, FCFA, njangi).
+- GSM-7 only: avoid accents in source text (the compressor transliterates anyway), no emojis
+  in node text (the `theme.icon` is UI-only and never sent over USSD).
 - Every static screen must fit in 156 characters; `python scripts/validate_manifests.py`
   walks every node (a hook runs it on save).
 - Handlers return either a string or `{ "text": str, "end": bool, "context": dict }`.

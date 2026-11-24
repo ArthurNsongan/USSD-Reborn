@@ -1,10 +1,10 @@
 {
   "id": "agripulse",
   "name": "AgriPulse CM",
-  "tagline": "Prix des vivres, diagnostic cacao et meteo agricole pour les producteurs du Cameroun.",
+  "tagline": "Food market prices, cocoa disease diagnosis and farm weather for Cameroonian growers.",
   "shortcode": "*384*1#",
-  "version": "1.0.0",
-  "locale": "fr-CM",
+  "version": "1.1.0",
+  "locale": "en-CM",
   "entryNode": "home",
   "theme": {
     "primaryColor": "#16a34a",
@@ -20,55 +20,55 @@
     "homeKey": "00",
     "nextPageKey": "99",
     "sessionTimeoutSec": 180,
-    "nextPageLabel": "99. Suite",
-    "backLabel": "0. Retour",
-    "invalidMessage": "Choix invalide.",
-    "expiredMessage": "Session expiree. Recomposez *384*1#.",
-    "errorMessage": "Service indisponible. Reessayez."
+    "nextPageLabel": "99. More",
+    "backLabel": "0. Back",
+    "invalidMessage": "Invalid choice.",
+    "expiredMessage": "Session expired. Dial *384*1# again.",
+    "errorMessage": "Service unavailable. Try again."
   },
   "compression": {
     "abbreviations": {
       "Douala": "Dla",
       "Yaounde": "Yde",
-      "traitement": "trait.",
-      "traiter": "trait.",
-      "fongicide": "fongic.",
+      "treatment": "treat.",
+      "fungicide": "fungic.",
       "insecticide": "insectic.",
       "prevention": "prev.",
-      "semaines": "sem.",
-      "semaine": "sem.",
-      "jours": "j",
-      "environ": "env.",
-      "humidite": "humid.",
+      "neighbouring": "nearby",
+      "weeks": "wks",
+      "week": "wk",
+      "days": "d",
+      "approximately": "approx.",
+      "humidity": "humid.",
       "temperature": "temp.",
-      "recommande": "recom.",
+      "recommended": "recom.",
       "maximum": "max",
       "minimum": "min",
-      "kilogramme": "kg",
-      "avec": "av.",
-      "pour": "pr"
+      "kilogram": "kg",
+      "within": "in",
+      "with": "w/"
     }
   },
   "quickPresets": [
-    { "label": "Prix plantain a Sandaga", "inputs": "1*1*1" },
-    { "label": "Diagnostic pourriture brune", "inputs": "2*1" },
-    { "label": "Meteo Littoral 48h", "inputs": "3*1" },
-    { "label": "Conseil IA: manioc", "inputs": "4*taches blanches feuilles manioc" }
+    { "label": "Plantain price at Sandaga", "inputs": "1*1*1" },
+    { "label": "Diagnose black pod rot", "inputs": "2*1" },
+    { "label": "Littoral weather 48h", "inputs": "3*1" },
+    { "label": "AI advice: cassava", "inputs": "4*white spots on cassava leaves" }
   ],
   "nodes": {
     "home": {
       "type": "menu",
       "title": "AgriPulse CM (*384*1#)",
       "options": [
-        { "key": "1", "label": "Prix des vivres", "next": "price_market" },
-        { "key": "2", "label": "Diagnostic cacao", "next": "cocoa_symptom" },
-        { "key": "3", "label": "Meteo agricole", "next": "weather_zone" },
-        { "key": "4", "label": "Conseil IA rapide", "next": "advice_question" }
+        { "key": "1", "label": "Food prices", "next": "price_market" },
+        { "key": "2", "label": "Cocoa diagnosis", "next": "cocoa_symptom" },
+        { "key": "3", "label": "Farm weather", "next": "weather_zone" },
+        { "key": "4", "label": "Quick AI advice", "next": "advice_question" }
       ]
     },
     "price_market": {
       "type": "menu",
-      "title": "Prix du jour - Marche:",
+      "title": "Today's prices - Market:",
       "options": [
         { "key": "1", "label": "Douala (Sandaga)", "next": "price_product", "set": { "market": "sandaga" } },
         { "key": "2", "label": "Yaounde (Mfoundi)", "next": "price_product", "set": { "market": "mfoundi" } },
@@ -78,13 +78,13 @@
     },
     "price_product": {
       "type": "menu",
-      "title": "Choisir la denree:",
+      "title": "Choose a product:",
       "options": [
         { "key": "1", "label": "Plantain", "next": "price_result", "set": { "product": "plantain" } },
-        { "key": "2", "label": "Manioc", "next": "price_result", "set": { "product": "manioc" } },
-        { "key": "3", "label": "Macabo", "next": "price_result", "set": { "product": "macabo" } },
-        { "key": "4", "label": "Huile de palme", "next": "price_result", "set": { "product": "huile_palme" } },
-        { "key": "5", "label": "Cacao (kg)", "next": "price_result", "set": { "product": "cacao" } }
+        { "key": "2", "label": "Cassava", "next": "price_result", "set": { "product": "cassava" } },
+        { "key": "3", "label": "Cocoyam (macabo)", "next": "price_result", "set": { "product": "cocoyam" } },
+        { "key": "4", "label": "Palm oil", "next": "price_result", "set": { "product": "palm_oil" } },
+        { "key": "5", "label": "Cocoa (kg)", "next": "price_result", "set": { "product": "cocoa" } }
       ]
     },
     "price_result": {
@@ -94,11 +94,11 @@
     },
     "cocoa_symptom": {
       "type": "menu",
-      "title": "Diagnostic cacao - Symptome:",
+      "title": "Cocoa diagnosis - Symptom:",
       "options": [
-        { "key": "1", "label": "Cabosses noires/brunes", "next": "cocoa_result", "set": { "symptom": "black_pod" } },
-        { "key": "2", "label": "Piqures noires/trous", "next": "cocoa_result", "set": { "symptom": "mirids" } },
-        { "key": "3", "label": "Feuilles jaunes/gonflees", "next": "cocoa_result", "set": { "symptom": "swollen_shoot" } }
+        { "key": "1", "label": "Black/brown pods", "next": "cocoa_result", "set": { "symptom": "black_pod" } },
+        { "key": "2", "label": "Black spots/holes", "next": "cocoa_result", "set": { "symptom": "mirids" } },
+        { "key": "3", "label": "Yellow/swollen leaves", "next": "cocoa_result", "set": { "symptom": "swollen_shoot" } }
       ]
     },
     "cocoa_result": {
@@ -108,12 +108,12 @@
     },
     "weather_zone": {
       "type": "menu",
-      "title": "Meteo agricole 48h - Zone:",
+      "title": "Farm weather 48h - Region:",
       "options": [
         { "key": "1", "label": "Littoral", "next": "weather_result", "set": { "zone": "littoral" } },
         { "key": "2", "label": "Centre", "next": "weather_result", "set": { "zone": "centre" } },
-        { "key": "3", "label": "Ouest", "next": "weather_result", "set": { "zone": "ouest" } },
-        { "key": "4", "label": "Sud-Ouest", "next": "weather_result", "set": { "zone": "sud_ouest" } }
+        { "key": "3", "label": "West", "next": "weather_result", "set": { "zone": "west" } },
+        { "key": "4", "label": "South-West", "next": "weather_result", "set": { "zone": "south_west" } }
       ]
     },
     "weather_result": {
@@ -123,12 +123,12 @@
     },
     "advice_question": {
       "type": "input",
-      "prompt": "Conseil IA: decrivez le probleme en quelques mots (ex: taches feuilles manioc)",
+      "prompt": "Quick AI advice: describe the problem in a few words (e.g. spots on cassava leaves)",
       "saveAs": "question",
       "next": "advice_result",
-      "example": "taches blanches feuilles manioc",
+      "example": "white spots on cassava leaves",
       "validation": { "kind": "text", "pattern": "^.{3,80}$" },
-      "errorMessage": "Texte trop court ou trop long (3-80)."
+      "errorMessage": "Text too short or too long (3-80)."
     },
     "advice_result": {
       "type": "action",

@@ -5,7 +5,7 @@ import unicodedata
 
 
 def _fold(text: str) -> str:
-    """Lowercase and strip accents so 'Mosaïque' matches 'mosaique'."""
+    """Lowercase and strip accents so 'Mosaïc' matches 'mosaic'."""
     return "".join(c for c in unicodedata.normalize("NFKD", text.lower()) if not unicodedata.combining(c))
 
 
@@ -17,24 +17,24 @@ def get_market_price(context: dict, data: dict) -> dict:
     market, product = context.get("market"), context.get("product")
     quote = data["prices"].get(market, {}).get(product)
     if quote is None:
-        return {"text": "Prix non disponible pour ce marche.", "end": True}
+        return {"text": "Price not available for this market.", "end": True}
     item = data["products"][product]
     text = (f"{item['label']} - {data['markets'][market]}\n"
-            f"Prix: {_fcfa(quote['price'])}/{item['unit']}\n"
-            f"Tendance 7j: {quote['trend']}\n"
-            f"Releve du {data['reportDate']}")
+            f"Price: {_fcfa(quote['price'])}/{item['unit']}\n"
+            f"7-day trend: {quote['trend']}\n"
+            f"Reported {data['reportDate']}")
     return {"text": text, "end": True}
 
 
 def diagnose_cocoa(context: dict, data: dict) -> dict:
-    return {"text": data["cocoa"].get(context.get("symptom"), "Symptome inconnu."), "end": True}
+    return {"text": data["cocoa"].get(context.get("symptom"), "Unknown symptom."), "end": True}
 
 
 def get_weather(context: dict, data: dict) -> dict:
     zone = data["weather"].get(context.get("zone"))
     if zone is None:
-        return {"text": "Zone inconnue.", "end": True}
-    text = f"Meteo 48h {zone['label']}: {zone['rain']}, humidite {zone['humidity']}%.\n{zone['advice']}"
+        return {"text": "Unknown region.", "end": True}
+    text = f"Weather 48h {zone['label']}: {zone['rain']}, humidity {zone['humidity']}%.\n{zone['advice']}"
     return {"text": text, "end": True}
 
 
@@ -49,5 +49,6 @@ def quick_advice(context: dict, data: dict) -> dict:
         return (10 if crop_hit else 0) + symptom_hits
 
     best = max(data["advice"], key=score)
-    answer = best["answer"] if score(best) >= 10 else data["defaultAdvice"]
-    return {"text": answer, "end": True, "context": {"advice_topic": best["keywords"][0] if score(best) >= 10 else "general"}}
+    matched = score(best) >= 10
+    answer = best["answer"] if matched else data["defaultAdvice"]
+    return {"text": answer, "end": True, "context": {"advice_topic": best["keywords"][0] if matched else "general"}}
