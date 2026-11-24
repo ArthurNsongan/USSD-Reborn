@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ussd-reborn": {
+      "command": "python",
+      "args": ["mcp_server/ussd_mcp.py"],
+      "disabled": false,
+      "autoApprove": [
+        "list_ussd_apps",
+        "simulate_ussd_flow",
+        "audit_skeleton_compliance"
+      ]
+    }
+  }
+}

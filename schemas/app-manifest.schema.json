@@ -1,0 +1,129 @@
+{
+  "title": "USSD-Reborn App Manifest (Skeleton Contract, JSON Schema Draft 2020-12)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "tagline", "shortcode", "version", "locale", "entryNode", "theme", "nodes"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "maxLength": 40 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 40 },
+    "tagline": { "type": "string", "maxLength": 140 },
+    "shortcode": { "type": "string", "pattern": "^\\*[0-9]{1,4}(\\*[0-9]{1,4})*#$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "locale": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+    "entryNode": { "$ref": "#/$defs/nodeId" },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primaryColor", "accentColor", "screenBg", "screenText", "bezelColor", "badgeLabel"],
+      "properties": {
+        "primaryColor": { "$ref": "#/$defs/color" },
+        "accentColor": { "$ref": "#/$defs/color" },
+        "screenBg": { "$ref": "#/$defs/color" },
+        "screenText": { "$ref": "#/$defs/color" },
+        "bezelColor": { "$ref": "#/$defs/color" },
+        "badgeLabel": { "type": "string", "maxLength": 24 },
+        "icon": { "type": "string", "maxLength": 8 }
+      }
+    },
+    "navigation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "backKey": { "$ref": "#/$defs/key" },
+        "homeKey": { "$ref": "#/$defs/key" },
+        "nextPageKey": { "$ref": "#/$defs/key" },
+        "sessionTimeoutSec": { "type": "integer", "minimum": 20, "maximum": 600 },
+        "nextPageLabel": { "$ref": "#/$defs/shortText" },
+        "backLabel": { "$ref": "#/$defs/shortText" },
+        "invalidMessage": { "$ref": "#/$defs/shortText" },
+        "expiredMessage": { "$ref": "#/$defs/shortText" },
+        "errorMessage": { "$ref": "#/$defs/shortText" }
+      }
+    },
+    "compression": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "abbreviations": {
+          "type": "object",
+          "additionalProperties": { "type": "string", "maxLength": 20 }
+        }
+      }
+    },
+    "quickPresets": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "inputs"],
+        "properties": {
+          "label": { "type": "string", "maxLength": 48 },
+          "inputs": { "type": "string", "pattern": "^[^*]+(\\*[^*]+)*$", "maxLength": 80 }
+        }
+      }
+    },
+    "nodes": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/nodeId" },
+      "additionalProperties": { "$ref": "#/$defs/node" }
+    }
+  },
+  "$defs": {
+    "nodeId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,47}$" },
+    "key": { "type": "string", "pattern": "^[0-9#*]{1,3}$" },
+    "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+    "shortText": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "next"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "next": { "$ref": "#/$defs/nodeId" },
+        "set": { "type": "object" }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["menu", "input", "action", "static"] },
+        "title": { "type": "string", "maxLength": 156 },
+        "text": { "type": "string", "maxLength": 600 },
+        "prompt": { "type": "string", "maxLength": 156 },
+        "options": { "type": "array", "maxItems": 9, "items": { "$ref": "#/$defs/option" } },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "enum": ["numeric", "text", "code"] },
+            "pattern": { "type": "string" },
+            "min": { "type": "number" },
+            "max": { "type": "number" }
+          }
+        },
+        "saveAs": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "next": { "$ref": "#/$defs/nodeId" },
+        "errorMessage": { "$ref": "#/$defs/shortText" },
+        "example": { "type": "string", "maxLength": 80 },
+        "handler": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "useAiCompression": { "type": "boolean" },
+        "end": { "type": "boolean" }
+      },
+      "allOf": [
+        { "if": { "properties": { "type": { "const": "menu" } } },
+          "then": { "required": ["title", "options"], "properties": { "options": { "minItems": 1 } } } },
+        { "if": { "properties": { "type": { "const": "input" } } },
+          "then": { "required": ["prompt", "saveAs", "next", "example"] } },
+        { "if": { "properties": { "type": { "const": "action" } } },
+          "then": { "required": ["handler"] } },
+        { "if": { "properties": { "type": { "const": "static" } } },
+          "then": { "required": ["text"] } }
+      ]
+    }
+  }
+}

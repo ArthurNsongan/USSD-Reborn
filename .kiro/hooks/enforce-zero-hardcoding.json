@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Enforce zero hardcoding and < 400 LOC in core/",
+      "trigger": "PostFileSave",
+      "description": "Audits core/ after each save: fails if any domain term leaks into the skeleton or if logical LOC reaches 400.",
+      "matcher": "core[\\\\/].*\\.py$",
+      "action": {
+        "type": "command",
+        "command": "python scripts/check_skeleton_purity.py",
+        "timeout": 60
+      }
+    }
+  ]
+}

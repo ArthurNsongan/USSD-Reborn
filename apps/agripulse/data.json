@@ -1,0 +1,86 @@
+{
+  "_note": "Demo data: indicative prices in FCFA, not a live market feed.",
+  "reportDate": "23/11/2026",
+  "markets": {
+    "sandaga": "Douala Sandaga",
+    "mfoundi": "Yaounde Mfoundi",
+    "bafoussam": "Bafoussam",
+    "bamenda": "Bamenda"
+  },
+  "products": {
+    "plantain": { "label": "Plantain", "unit": "regime" },
+    "manioc": { "label": "Manioc", "unit": "sac 50kg" },
+    "macabo": { "label": "Macabo", "unit": "filet 25kg" },
+    "huile_palme": { "label": "Huile de palme", "unit": "litre" },
+    "cacao": { "label": "Cacao", "unit": "kg" }
+  },
+  "prices": {
+    "sandaga": {
+      "plantain": { "price": 4500, "trend": "+5%" },
+      "manioc": { "price": 12000, "trend": "stable" },
+      "macabo": { "price": 11000, "trend": "+3%" },
+      "huile_palme": { "price": 1250, "trend": "+8%" },
+      "cacao": { "price": 4800, "trend": "-2%" }
+    },
+    "mfoundi": {
+      "plantain": { "price": 4000, "trend": "stable" },
+      "manioc": { "price": 10500, "trend": "-3%" },
+      "macabo": { "price": 10000, "trend": "stable" },
+      "huile_palme": { "price": 1200, "trend": "+4%" },
+      "cacao": { "price": 4900, "trend": "-1%" }
+    },
+    "bafoussam": {
+      "plantain": { "price": 3500, "trend": "-4%" },
+      "manioc": { "price": 9000, "trend": "stable" },
+      "macabo": { "price": 8500, "trend": "-5%" },
+      "huile_palme": { "price": 1300, "trend": "+6%" },
+      "cacao": { "price": 4700, "trend": "stable" }
+    },
+    "bamenda": {
+      "plantain": { "price": 3800, "trend": "+2%" },
+      "manioc": { "price": 9500, "trend": "+1%" },
+      "macabo": { "price": 9000, "trend": "stable" },
+      "huile_palme": { "price": 1350, "trend": "+10%" },
+      "cacao": { "price": 4600, "trend": "-3%" }
+    }
+  },
+  "cocoa": {
+    "black_pod": "Pourriture brune (Phytophthora). Retirer et enterrer les cabosses atteintes sous 48h. Traiter au fongicide cuivre tous les 15 jours en saison des pluies. Prevention: elaguer, drainer, recolter souvent.",
+    "mirids": "Capsides (mirides): insectes piqueurs-suceurs. Traiter avec un insecticide homologue en juillet-aout puis octobre. Surveiller les jeunes pousses chaque semaine. Prevention: ombrage regule.",
+    "swollen_shoot": "Suspicion swollen shoot (virus CSSV, transmis par cochenilles). Pas de traitement curatif. Arracher et bruler les pieds atteints et voisins. Replanter des varietes tolerantes. Alerter le poste agricole."
+  },
+  "weather": {
+    "littoral": { "label": "Littoral", "rain": "Pluies fortes 35mm", "humidity": 88, "advice": "Pas de sechage au soleil. Traitement fongique apres 18h si pas de pluie." },
+    "centre": { "label": "Centre", "rain": "Averses 12mm", "humidity": 79, "advice": "Sechage cacao possible demain matin. Fenetre de traitement 6h-10h." },
+    "ouest": { "label": "Ouest", "rain": "Faible 4mm", "humidity": 70, "advice": "Bonne fenetre pour semis et epandage. Arroser les pepinieres." },
+    "sud_ouest": { "label": "Sud-Ouest", "rain": "Orages 28mm", "humidity": 86, "advice": "Proteger les recoltes. Reporter les traitements de 24h." }
+  },
+  "advice": [
+    {
+      "keywords": ["manioc", "cassava"],
+      "symptoms": ["tache", "blanc", "mosaique", "jaune", "feuille"],
+      "answer": "Manioc: taches ou mosaique sur feuilles = probable mosaique ou cercosporiose. Arracher les plants tres atteints, utiliser des boutures saines de variete tolerante, eviter de replanter au meme endroit. Demander conseil au delegue agricole."
+    },
+    {
+      "keywords": ["cacao", "cabosse"],
+      "symptoms": ["noir", "brun", "pourri", "tache", "trou"],
+      "answer": "Cacao: cabosses noires = pourriture brune probable. Enlever les cabosses malades, traiter au fongicide cuivre tous les 15 jours en pluie, elaguer pour aerer la plantation."
+    },
+    {
+      "keywords": ["plantain", "banane", "bananier"],
+      "symptoms": ["raie", "noir", "jaune", "feuille", "tache", "fletri"],
+      "answer": "Plantain: raies noires sur feuilles = cercosporiose noire probable. Couper et bruler les feuilles atteintes, espacer les pieds, apporter de la matiere organique. Eviter les rejets de plants malades."
+    },
+    {
+      "keywords": ["mais"],
+      "symptoms": ["chenille", "trou", "feuille", "ver"],
+      "answer": "Mais: trous et sciure dans le cornet = chenille legionnaire probable. Inspecter 2 fois par semaine, ramasser a la main ou appliquer un traitement homologue tot le matin."
+    },
+    {
+      "keywords": ["tomate"],
+      "symptoms": ["tache", "fletri", "brun", "pourri"],
+      "answer": "Tomate: taches brunes et fletrissement = mildiou probable. Retirer les feuilles atteintes, eviter l'arrosage des feuilles, traiter au fongicide cuivre et alterner les cultures."
+    }
+  ],
+  "defaultAdvice": "Conseil general: isoler les plants malades, eviter de replanter au meme endroit, utiliser des semences saines. Envoyez une photo au delegue agricole de votre arrondissement."
+}

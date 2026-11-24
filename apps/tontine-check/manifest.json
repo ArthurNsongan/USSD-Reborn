@@ -1,0 +1,130 @@
+{
+  "id": "tontine-check",
+  "name": "Tontine-Check",
+  "tagline": "Tours, penalites, caisse de secours et quittances verifiables pour les tontines (njangi).",
+  "shortcode": "*384*2#",
+  "version": "1.0.0",
+  "locale": "fr-CM",
+  "entryNode": "home",
+  "theme": {
+    "primaryColor": "#d97706",
+    "accentColor": "#fde68a",
+    "screenBg": "#140e04",
+    "screenText": "#ffb830",
+    "bezelColor": "#2a1d0c",
+    "badgeLabel": "NJANGI 2G",
+    "icon": "🪙"
+  },
+  "navigation": {
+    "backKey": "0",
+    "homeKey": "00",
+    "nextPageKey": "99",
+    "sessionTimeoutSec": 180,
+    "nextPageLabel": "99. Suite",
+    "backLabel": "0. Retour",
+    "invalidMessage": "Choix invalide.",
+    "expiredMessage": "Session expiree. Recomposez *384*2#.",
+    "errorMessage": "Service indisponible. Reessayez."
+  },
+  "compression": {
+    "abbreviations": {
+      "cotisation": "cotis.",
+      "penalite": "pen.",
+      "membre": "mbre",
+      "naissance": "naiss.",
+      "maladie": "mal.",
+      "prochaine": "proch.",
+      "seance": "sce"
+    }
+  },
+  "quickPresets": [
+    { "label": "Mon tour (membre M03)", "inputs": "1*M03" },
+    { "label": "Penalite: 25 000 FCFA, 5 jours", "inputs": "2*25000*5" },
+    { "label": "Caisse de secours", "inputs": "3" },
+    { "label": "Verifier quittance QT-2026-841", "inputs": "4*QT-2026-841" }
+  ],
+  "nodes": {
+    "home": {
+      "type": "menu",
+      "title": "TontineCheck (*384*2#)",
+      "options": [
+        { "key": "1", "label": "Mon tour beneficiaire", "next": "turn_member" },
+        { "key": "2", "label": "Calcul penalite retard", "next": "penalty_amount" },
+        { "key": "3", "label": "Caisse de secours", "next": "relief_overview" },
+        { "key": "4", "label": "Verifier quittance", "next": "receipt_code" }
+      ]
+    },
+    "turn_member": {
+      "type": "input",
+      "prompt": "Entrez votre code membre (ex: M03):",
+      "saveAs": "member_code",
+      "next": "turn_result",
+      "example": "M03",
+      "validation": { "kind": "code", "pattern": "^M[0-9]{2}$" },
+      "errorMessage": "Code invalide. Format: M01"
+    },
+    "turn_result": {
+      "type": "action",
+      "handler": "member_turn",
+      "end": true
+    },
+    "penalty_amount": {
+      "type": "input",
+      "prompt": "Montant de la cotisation due (FCFA):",
+      "saveAs": "amount",
+      "next": "penalty_days",
+      "example": "25000",
+      "validation": { "kind": "numeric", "min": 500, "max": 5000000 },
+      "errorMessage": "Montant invalide (500 a 5000000)."
+    },
+    "penalty_days": {
+      "type": "input",
+      "prompt": "Montant: {amount} FCFA\nNombre de jours de retard:",
+      "saveAs": "days",
+      "next": "penalty_result",
+      "example": "5",
+      "validation": { "kind": "numeric", "min": 1, "max": 365 },
+      "errorMessage": "Jours invalides (1 a 365)."
+    },
+    "penalty_result": {
+      "type": "action",
+      "handler": "compute_penalty",
+      "end": true
+    },
+    "relief_overview": {
+      "type": "action",
+      "handler": "relief_summary",
+      "options": [
+        { "key": "1", "label": "Mon eligibilite", "next": "relief_member" }
+      ]
+    },
+    "relief_member": {
+      "type": "input",
+      "prompt": "Eligibilite aide: code membre (ex: M04):",
+      "saveAs": "member_code",
+      "next": "relief_result",
+      "example": "M04",
+      "validation": { "kind": "code", "pattern": "^M[0-9]{2}$" },
+      "errorMessage": "Code invalide. Format: M01"
+    },
+    "relief_result": {
+      "type": "action",
+      "handler": "check_relief_eligibility",
+      "end": true
+    },
+    "receipt_code": {
+      "type": "input",
+      "prompt": "Code quittance (ex: QT-2026-841):",
+      "saveAs": "receipt_code",
+      "next": "receipt_result",
+      "example": "QT-2026-841",
+      "validation": { "kind": "code", "pattern": "^QT-[0-9]{4}-[0-9]{3}$" },
+      "errorMessage": "Format attendu: QT-2026-841"
+    },
+    "receipt_result": {
+      "type": "action",
+      "handler": "verify_receipt",
+      "end": true
+    }
+  }
+}

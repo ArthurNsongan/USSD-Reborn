@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Test USSD frame length (GSM <= 160)",
+      "trigger": "PostFileSave",
+      "description": "Runs the GSM-7 / 160-character / CON-END test suite whenever a core module or the GSM test file is saved.",
+      "matcher": "(core[\\\\/].*\\.py|tests[\\\\/]test_gsm_constraints\\.py)$",
+      "action": {
+        "type": "command",
+        "command": "python scripts/run_in_venv.py -m pytest tests/test_gsm_constraints.py -q",
+        "timeout": 120
+      }
+    }
+  ]
+}

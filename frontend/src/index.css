@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  --font-lcd: "VT323", "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* App-driven tokens. App.tsx overwrites them from the manifest theme of the selected app. */
+:root {
+  --screen-bg: #0b0f0c;
+  --screen-text: #9ca3af;
+  --brand-primary: #6b7280;
+  --brand-accent: #d1d5db;
+  --bezel: #1f2937;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 10%, color-mix(in srgb, var(--brand-primary) 18%, transparent), transparent 40%),
+    radial-gradient(circle at 85% 90%, color-mix(in srgb, var(--brand-accent) 8%, transparent), transparent 45%),
+    #07080a;
+  color: #e5e7eb;
+  font-family: var(--font-sans);
+  transition: background 600ms ease;
+}
+
+/* ---- Retro LCD ---------------------------------------------------------------- */
+.lcd {
+  position: relative;
+  background: var(--screen-bg);
+  color: var(--screen-text);
+  font-family: var(--font-lcd);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--screen-text) 55%, transparent);
+  box-shadow:
+    inset 0 0 28px rgb(0 0 0 / 0.85),
+    inset 0 0 2px color-mix(in srgb, var(--screen-text) 40%, transparent);
+  transition: background 500ms ease, color 500ms ease;
+}
+
+.lcd::after {
+  /* scanlines + vignette, subtle enough to stay readable */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.45));
+  animation: flicker 6s infinite steps(1);
+}
+
+@keyframes flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.82; }
+  98% { opacity: 0.95; }
+}
+
+.lcd-input {
+  background: transparent;
+  color: var(--screen-text);
+  caret-color: var(--screen-text);
+  font-family: var(--font-lcd);
+  outline: none;
+}
+
+.lcd-input::placeholder {
+  color: color-mix(in srgb, var(--screen-text) 40%, transparent);
+}
+
+.led-2g {
+  animation: blink 1.4s infinite;
+  background: var(--brand-accent);
+  box-shadow: 0 0 8px var(--brand-accent);
+}
+
+@keyframes blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0.2; }
+}
+
+.bezel {
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--bezel) 70%, white 8%), var(--bezel) 40%, color-mix(in srgb, var(--bezel) 80%, black)),
+    var(--bezel);
+  box-shadow:
+    0 30px 60px -20px rgb(0 0 0 / 0.8),
+    0 0 0 1px rgb(255 255 255 / 0.06),
+    inset 0 1px 0 rgb(255 255 255 / 0.12);
+  transition: background 500ms ease;
+}
+
+.key {
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.03));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), 0 2px 0 rgb(0 0 0 / 0.5);
+}
+
+.key:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+
+.panel {
+  background: rgb(17 19 24 / 0.75);
+  border: 1px solid rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lcd::after, .led-2g { animation: none; }
+}

@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Validate app manifests and walk every screen",
+      "trigger": "PostFileSave",
+      "description": "Validates every apps/*/manifest.json against the JSON Schema, checks graph integrity, and renders every reachable screen to enforce CON/END, <= 160 chars and GSM-7.",
+      "matcher": "(apps[\\\\/].*\\.(json|py)|schemas[\\\\/].*\\.json)$",
+      "action": {
+        "type": "command",
+        "command": "python scripts/validate_manifests.py",
+        "timeout": 120
+      }
+    }
+  ]
+}

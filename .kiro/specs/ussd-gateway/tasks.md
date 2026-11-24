@@ -1,0 +1,22 @@
+# Tasks: USSD Gateway
+
+- [x] 1. GSM-7 compressor (`core/gsm_compressor.py`)
+  - [x] 1.1 `to_gsm7` / `is_gsm7` with transliteration table and extension-character removal.
+  - [x] 1.2 `paginate` on line/word boundaries with footer-aware budget.
+  - [x] 1.3 Async `compress` with optional OpenAI-compatible LLM, 1.8 s hard timeout, abbreviations fallback, telemetry.
+  - _Requirements: 1.1-1.4, 2.1-2.5_
+- [x] 2. Session store and engine (`core/session_engine.py`)
+  - [x] 2.1 SQLite `ussd_sessions` store with load/save/delete/count_active.
+  - [x] 2.2 Input diffing for cumulative vs step modes, replay of dial shortcuts.
+  - [x] 2.3 Step logic: next page, back, home, options with `set`, validated inputs.
+  - [x] 2.4 Rendering: interpolation, handlers, compression, pagination, frame building, END cleanup, expiry.
+  - _Requirements: 3.1-3.8, 4.1-4.5_
+- [x] 3. Webhook adapter (`core/webhook_adapter.py`) and composition root (`main.py`)
+  - _Requirements: 5.1-5.5_
+- [x] 4. Tests
+  - [x] 4.1 `tests/test_gsm_constraints.py`
+  - [x] 4.2 `tests/test_session_engine.py`
+  - [x] 4.3 `tests/test_webhook_adapter.py`
+  - _Requirements: all_
+- [x] 5. `scripts/demo_curl.sh` with Africa's Talking style requests
+  - _Requirements: 5.1_

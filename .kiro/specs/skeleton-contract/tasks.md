@@ -1,0 +1,22 @@
+# Tasks: Skeleton Contract
+
+- [x] 1. Write `schemas/app-manifest.schema.json` (Draft 2020-12)
+  - Metadata, theme, navigation, compression, quickPresets, nodes with `oneOf`-free `type` enum and per-type `required` via `if/then`.
+  - _Requirements: 1.2, 3.1-3.6, 4.1_
+- [x] 2. Implement Pydantic models in `core/models.py`
+  - `ThemeConfig`, `Navigation`, `MenuOption`, `Validation`, `NodeSpec`, `QuickPreset`, `AppManifest`.
+  - _Requirements: 3.1-3.6_
+- [x] 3. Implement `core/manifest_loader.py`
+  - [x] 3.1 Discovery of `apps/*/manifest.json`, schema validation, id/folder check.
+  - [x] 3.2 `importlib` handler registration and `data.json` loading.
+  - [x] 3.3 Integrity checks: entry node, `next` references, handlers, reserved keys, input fields.
+  - [x] 3.4 `AppRegistry.resolve()` by shortcode or id, duplicate shortcode rejection.
+  - _Requirements: 1.1-1.6, 2.1-2.5_
+- [x] 4. Implement `scripts/check_skeleton_purity.py` with reusable `audit()`
+  - _Requirements: 5.1-5.3_
+- [x] 5. Implement `scripts/validate_manifests.py` (schema + integrity + exhaustive frame walk)
+  - _Requirements: 2.1-2.5_
+- [x] 6. Expose `/api/apps` and `/api/metrics`
+  - _Requirements: 4.1, 5.4_
+- [x] 7. Tests: `tests/test_skeleton_purity.py`, loader error cases in `tests/test_session_engine.py`
+  - _Requirements: 2.1-2.5, 5.1-5.2_
