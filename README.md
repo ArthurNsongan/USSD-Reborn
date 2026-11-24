@@ -129,7 +129,8 @@ Everything is in [`.kiro/`](.kiro), which is committed.
   - `enforce-zero-hardcoding`: runs `check_skeleton_purity.py` on `core/` saves.
   - `test-ussd-length`: runs the GSM test suite.
   - `validate-manifests`: runs the schema check, integrity check and exhaustive screen walk on `apps/` saves.
-- **MCP server** (`mcp_server/ussd_mcp.py`, stdio): exposes `list_ussd_apps`, `simulate_ussd_flow` and `audit_skeleton_compliance`, so Kiro can dial the services and audit the skeleton from chat. Register it in `.kiro/settings/mcp.json`:
+- **MCP server** (`mcp_server/ussd_mcp.py`, stdio): exposes `list_ussd_apps`, `simulate_ussd_flow` and `audit_skeleton_compliance`, so Kiro can dial the services and audit the skeleton from chat. It is registered in the committed
+`.kiro/settings/mcp.json`, so opening the repository in Kiro is enough:
   ```json
   {
     "mcpServers": {
