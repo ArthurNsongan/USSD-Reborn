@@ -1,0 +1,20 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# New > Blueprint > select this repository. No secret is required: the GSM compressor runs in
+# deterministic mode. Add LLM_PROVIDER / LLM_API_KEY in the dashboard to enable AI compression.
+services:
+  - type: web
+    name: ghostsignal-ussd
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: USSD_DB_PATH
+        value: /tmp/ussd_sessions.db
+      - key: LLM_TIMEOUT_SEC
+        value: "1.8"
+      - key: LLM_PROVIDER
+        sync: false
+      - key: LLM_API_KEY
+        sync: false

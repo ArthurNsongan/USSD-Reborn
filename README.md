@@ -9,6 +9,8 @@ any number of USSD services from declarative JSON manifests. Every screen it emi
 `CON`/`END` frame of at most 160 GSM-7 characters. An optional LLM compressor shortens long answers,
 and a deterministic local fallback kicks in whenever the LLM is missing or slow.
 
+![GhostSignal simulator: app switcher, retro 2G phone dialing *384*1#, live frame inspector and skeleton proof bar](docs/simulator.png)
+
 | | App 1: **AgriPulse CM** | App 2: **Tontine-Check** |
 | --- | --- | --- |
 | Shortcode | `*384*1#` | `*384*2#` |
@@ -33,7 +35,7 @@ python -m venv .venv
 .venv/Scripts/python -m pip install -e .[dev]      # Windows
 # .venv/bin/python -m pip install -e .[dev]        # macOS / Linux
 
-# 2. Simulator build (Node 20+), served by FastAPI on the same port
+# 2. Simulator build (Node 20.19+ or 22.12+), served by FastAPI on the same port
 cd frontend && npm install && npm run build && cd ..
 
 # 3. Run
@@ -43,6 +45,21 @@ cd frontend && npm install && npm run build && cd ..
 
 For frontend development with hot reload, run `npm run dev` in `frontend/` and open
 `http://localhost:5173`. Vite proxies `/api` and `/ussd` to port 8000.
+
+### With Docker (one command)
+```bash
+docker build -t ghostsignal . && docker run --rm -p 8000:8000 ghostsignal
+# open http://127.0.0.1:8000
+```
+The image builds the simulator, then serves the webhook, the API and the UI on a single port.
+It runs as a non-root user, and SQLite sessions live in `/tmp` (demo data, reset on restart).
+
+### Deploy a public demo (free tier)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ArthurNsongan/USSD-Reborn)
+
+`render.yaml` describes a Docker web service with a health check on `/api/health`. No secret is needed.
+The same `Dockerfile` works on Railway or Fly.io, which inject `PORT` the same way. Once deployed,
+`https://<your-app>/ussd` can be used directly as an Africa's Talking USSD callback URL.
 
 ### Talk to it like a telecom operator
 ```bash
