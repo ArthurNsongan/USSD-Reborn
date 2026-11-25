@@ -57,8 +57,10 @@ It runs as a non-root user, and SQLite sessions live in `/tmp` (demo data, reset
 ### Deploy a public demo on Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ArthurNsongan/USSD-Reborn)
 
-Vercel detects the FastAPI `app` in `main.py` and runs it as a single Vercel Function. `vercel.json`
-builds the simulator first (`frontend/dist`, served by the same app). No secret is needed.
+`vercel.json` declares two [Vercel Services](https://vercel.com/docs/services) in one project:
+`app` (FastAPI, `main:app`, one Vercel Function) receives `/ussd` and `/api/*`, and `frontend` (the Vite
+simulator, served from the CDN) receives every other path. Both share one domain, so the simulator calls
+the API without CORS. No secret is needed.
 
 Serverless instances do not share memory or disk, so a USSD session can land on an instance that has
 never seen it. That is fine by design: like Africa's Talking, the simulator always sends the cumulative
