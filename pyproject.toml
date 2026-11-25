@@ -26,4 +26,4 @@ pythonpath = ["."]
 addopts = "-q"
 
 [tool.setuptools]
-packages = ["core", "channels", "mcp_server", "scripts"]
+packages = ["core", "mcp_server", "scripts"]

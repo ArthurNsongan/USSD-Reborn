@@ -111,21 +111,6 @@ press CALL like on a real phone, or tap the input field for letters (member code
 - **iPhone (Safari):** iOS does not allow web pages to go full screen in the browser. Use *Share > Add to Home Screen*: launched from the icon, it runs without browser bars (a one-time hint explains this).
 - **Deep links:** `/phone?app=tontine-check` picks a service, `/phone?dial=*384*1*1*1%23` dials a full shortcut.
 
-## Call it from any phone (no USSD needed, e.g. in the United States)
-
-Third-party USSD codes do not exist on US networks, so GhostSignal adds a **voice channel**: the caller
-dials a regular phone number, hears every `CON`/`END` frame read aloud ("Press 2: Cocoa diagnosis") and
-answers with the keypad. Free-text and code inputs also accept speech ("white spots on my cassava
-leaves", "Q T 2026 841"). `99` reads the next page, `0` goes back, `00` goes home, exactly as on USSD.
-
-- `channels/twilio_voice.py` is an adapter outside `core/`: same engine, same manifests, zero skeleton change.
-- Stateless: each `<Gather>` callback URL carries the cumulative history (`?h=2*25000`), so any serverless instance can answer the next step (tested with two independent servers).
-- Setup: buy a voice-capable number in the Twilio console and set its *A call comes in* webhook to
-  `POST https://ussd-reborn.vercel.app/voice` (add `?app=agripulse` to skip the service menu).
-  Set `TWILIO_AUTH_TOKEN` and `TWILIO_WEBHOOK_BASE_URL=https://ussd-reborn.vercel.app` in Vercel to
-  reject requests that do not carry a valid Twilio signature.
-- A Twilio trial account only accepts calls from verified numbers, so judges' calls need an upgraded account.
-
 ## Test on a real phone over GSM
 
 The simulator speaks exactly the Africa's Talking protocol, so the same deployment answers a real USSD
@@ -246,9 +231,6 @@ cd frontend && npm run build              # TypeScript strict + Vite production 
 | `LLM_API_KEY` | empty | Enables the AI compressor. Without it the deterministic fallback is used |
 | `LLM_MODEL` / `LLM_BASE_URL` | preset | Override the model or point to any OpenAI-compatible endpoint |
 | `LLM_TIMEOUT_SEC` | `1.8` | Hard deadline before the local fallback |
-| `TWILIO_AUTH_TOKEN` | empty | Enables Twilio signature checks on `/voice` (recommended in production) |
-| `TWILIO_WEBHOOK_BASE_URL` | empty | Public origin used to verify signatures behind a proxy |
-| `TWILIO_VOICE` | `Polly.Joanna` | Text-to-speech voice used by `<Say>` |
 
 Only nodes with `useAiCompression: true` (AgriPulse "Quick AI advice") ever call the LLM, and only
 when their text does not fit the screen.

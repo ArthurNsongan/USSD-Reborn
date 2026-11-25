@@ -8,9 +8,6 @@ import os
 import tempfile
 from pathlib import Path
 
-from fastapi.staticfiles import StaticFiles
-
-from channels.twilio_voice import voice_router
 from core.manifest_loader import AppRegistry
 from core.session_engine import SessionEngine, SessionStore
 from core.webhook_adapter import create_app
@@ -31,13 +28,8 @@ def build_app(db_path: str | None = None):
     registry = AppRegistry(ROOT / "apps", ROOT / "schemas" / "app-manifest.schema.json").load()
     store = SessionStore(db_path or os.getenv("USSD_DB_PATH") or default_db_path())
     origins = [o.strip() for o in os.getenv("USSD_CORS_ORIGINS", DEFAULT_ORIGINS).split(",") if o.strip()]
-    engine = SessionEngine(store)
-    api = create_app(registry, engine, audit=lambda: audit(ROOT / "core"), cors_origins=origins)
-    api.include_router(voice_router(registry, engine))  # phone-call channel (Twilio), outside core/
-    dist = ROOT / "frontend" / "dist"
-    if dist.is_dir():  # mounted last so /ussd, /api and /voice keep priority
-        api.mount("/", StaticFiles(directory=dist, html=True), name="simulator")
-    return api
+    return create_app(registry, SessionEngine(store), audit=lambda: audit(ROOT / "core"),
+                      static_dir=ROOT / "frontend" / "dist", cors_origins=origins)
 
 
 app = build_app()

@@ -20,7 +20,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 COPY pyproject.toml README.md LICENSE ./
 COPY core/ core/
-COPY channels/ channels/
 COPY scripts/ scripts/
 COPY mcp_server/ mcp_server/
 RUN pip install .
