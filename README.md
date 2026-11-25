@@ -2,6 +2,10 @@
 
 **A universal USSD skeleton that brings 2G telecom back with AI.** Kiroween 2026, category **Skeleton Crew**.
 
+**Live demo:** [ussd-reborn.vercel.app](https://ussd-reborn.vercel.app) (lab view) ·
+**On your phone:** [ussd-reborn.vercel.app/phone](https://ussd-reborn.vercel.app/phone) (full-screen handset).
+No SIM card, no account, no API key.
+
 In Cameroon and across sub-Saharan Africa, millions of people still use USSD (`*126#`, `#150#`) because
 mobile data is expensive or unreliable outside city centres. USSD menus are usually rigid and hand-coded
 per service. GhostSignal is one small, domain-agnostic engine (`core/`, under 400 logical lines) that runs
@@ -94,6 +98,32 @@ channel callback at `https://<your-host>/ussd`.
 - **Decision Tree**: the manifest graph, with the current node and visited path highlighted.
 - **Telecom Webhook**: sends the exact Africa's Talking form request from the browser and gives you a copyable `curl`.
 - **Skeleton proof bar**: `core/` LOC against 400, domain-term leaks, loaded apps and active sessions, computed live by the audit script.
+
+## Phone mode (`/phone`)
+
+<img src="docs/phone-mode.png" alt="Phone mode on two screen sizes: Tontine-Check penalty result and AgriPulse paginated cocoa diagnosis" width="560">
+
+Open [`/phone`](https://ussd-reborn.vercel.app/phone) on Android or iOS for a full-viewport 2G handset:
+LCD, keypad with haptic feedback, `0` / `00` / `99` soft keys and a service picker. Type `*384*2#` and
+press CALL like on a real phone, or tap the input field for letters (member codes, receipt codes, AI questions).
+
+- **Android (Chrome):** the first tap switches to real full screen. *Install app* / *Add to Home screen* opens it full screen every time.
+- **iPhone (Safari):** iOS does not allow web pages to go full screen in the browser. Use *Share > Add to Home Screen*: launched from the icon, it runs without browser bars (a one-time hint explains this).
+- **Deep links:** `/phone?app=tontine-check` picks a service, `/phone?dial=*384*1*1*1%23` dials a full shortcut.
+
+## Test on a real phone over GSM
+
+The simulator speaks exactly the Africa's Talking protocol, so the same deployment answers a real USSD
+gateway. Real dialing needs a shortcode provisioned by an aggregator on each operator:
+
+- **Africa's Talking sandbox (free, works from anywhere):** create a sandbox app, add a USSD channel with
+  the callback URL `https://ussd-reborn.vercel.app/ussd?app=agripulse` (or `?app=tontine-check`), then
+  dial the assigned code in the Africa's Talking web simulator. `?app=` maps the code the sandbox assigns
+  to one of the apps.
+- **Live codes:** Africa's Talking publishes live USSD pricing for East African operators (Kenya, Uganda,
+  Tanzania, among others). We did not find public live USSD coverage for Cameroon (MTN, Orange). A
+  `*xxx#` code dialable in Douala or Yaounde has to be obtained through an operator or a local aggregator,
+  then pointed at `/ussd` with the same callback format.
 
 ## Architecture
 

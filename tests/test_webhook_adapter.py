@@ -55,6 +55,12 @@ def test_json_step_mode_and_app_id(client: TestClient) -> None:
     assert frame["current_node"] == "weather_zone" and frame["app_id"] == "agripulse"
 
 
+def test_callback_query_selects_app_for_gateway_assigned_code(client: TestClient) -> None:
+    data = {"sessionId": "SB-1", "serviceCode": "*384*55021#", "phoneNumber": "+237690000000", "text": "1*M03"}
+    reply = client.post("/ussd?app=tontine-check", data=data, headers=FORM)
+    assert reply.text.startswith("END M03 Mbarga Aline")
+
+
 def test_unknown_service_code(client: TestClient) -> None:
     assert _form(client, "U-1", "*000#", "").text == "END Unknown service code."
     assert client.post("/ussd", json={"session_id": "U-2", "service_code": "*000#"}).status_code == 404

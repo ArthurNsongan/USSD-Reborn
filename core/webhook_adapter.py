@@ -38,7 +38,8 @@ def create_app(registry: AppRegistry, engine: SessionEngine, audit: Callable[[],
         except (ValidationError, ValueError) as exc:  # JSONDecodeError is a ValueError
             detail = exc.errors(include_url=False) if isinstance(exc, ValidationError) else str(exc)
             return JSONResponse({"detail": detail}, 422) if as_json else PlainTextResponse("END Invalid request.", 400)
-        app = registry.resolve(payload.app_id or payload.service_code)
+        # ?app=<id> lets a gateway-assigned code (e.g. an Africa's Talking sandbox code) target an app.
+        app = registry.resolve(payload.app_id or request.query_params.get("app") or payload.service_code)
         if app is None:
             return JSONResponse({"detail": "Unknown service code"}, 404) if as_json else \
                 PlainTextResponse("END Unknown service code.")

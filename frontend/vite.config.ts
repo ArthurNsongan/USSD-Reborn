@@ -9,7 +9,14 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
+    host: true, // reachable from a phone on the same Wi-Fi: http://<pc-ip>:5173/phone/
     proxy: { "/api": backend, "/ussd": backend },
   },
-  build: { outDir: "dist", emptyOutDir: true },
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+    // Two pages: the lab view (/) and the full-screen handset (/phone/).
+    // Paths are relative to frontend/, where every npm script runs.
+    rollupOptions: { input: { main: "index.html", phone: "phone/index.html" } },
+  },
 });

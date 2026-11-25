@@ -6,6 +6,7 @@ import { RetroPhone } from "./components/RetroPhone";
 import { SkeletonProofBar } from "./components/SkeletonProofBar";
 import { TelecomCurlPanel } from "./components/TelecomCurlPanel";
 import { fetchApps, fetchMetrics, randomId, sendUssd } from "./lib/api";
+import { parseDial, useThemeVariables } from "./lib/theme";
 import type { HistoryEntry, InputMode, Metrics, UssdApp, UssdFrame } from "./lib/types";
 
 type TabId = "inspector" | "tree" | "telecom";
@@ -18,19 +19,6 @@ const TABS: Array<{ id: TabId; label: string; hint: string }> = [
 
 const DEMO_PHONE = "+237690000000";
 const METRICS_POLL_MS = 10_000;
-
-/** Applies the selected app theme to CSS variables used by every component. */
-function useThemeVariables(app: UssdApp | null) {
-  useEffect(() => {
-    if (!app) return;
-    const style = document.documentElement.style;
-    style.setProperty("--screen-bg", app.theme.screenBg);
-    style.setProperty("--screen-text", app.theme.screenText);
-    style.setProperty("--brand-primary", app.theme.primaryColor);
-    style.setProperty("--brand-accent", app.theme.accentColor);
-    style.setProperty("--bezel", app.theme.bezelColor);
-  }, [app]);
-}
 
 function BackendDown({ error }: { error: string }) {
   return (
@@ -142,12 +130,8 @@ export default function App() {
   /** Accepts *384*1# as well as direct-dial strings such as *384*1*1*1# (shortcode + inputs). */
   const dialComposed = (composed: string) => {
     const code = composed.replace(/\s+/g, "");
-    const exact = apps.find((a) => a.shortcode === code);
-    if (exact) return dial(exact);
-    for (const candidate of apps) {
-      const base = candidate.shortcode.slice(0, -1);
-      if (code.startsWith(`${base}*`) && code.endsWith("#")) return dial(candidate, code.slice(base.length + 1, -1));
-    }
+    const target = parseDial(apps, code);
+    if (target) return dial(target.app, target.text);
     requestSeq.current++;
     setFrame(null);
     setBusy(false);
@@ -187,6 +171,12 @@ export default function App() {
               Ghost<span style={{ color: "var(--brand-primary)" }}>Signal</span>
             </h1>
             <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/40">USSD-Reborn</span>
+            <a
+              href="/phone/"
+              className="rounded-full border border-[var(--brand-primary)] px-3 py-1 text-xs font-semibold text-[var(--brand-accent)] hover:bg-black/40"
+            >
+              📱 Phone mode
+            </a>
           </div>
           <p className="mt-1 max-w-xl text-sm text-white/60">
             One skeleton under 400 lines runs every 2G USSD service below from a JSON manifest. Every screen is a real
