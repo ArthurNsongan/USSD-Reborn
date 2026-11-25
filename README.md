@@ -54,12 +54,21 @@ docker build -t ghostsignal . && docker run --rm -p 8000:8000 ghostsignal
 The image builds the simulator, then serves the webhook, the API and the UI on a single port.
 It runs as a non-root user, and SQLite sessions live in `/tmp` (demo data, reset on restart).
 
-### Deploy a public demo (free tier)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ArthurNsongan/USSD-Reborn)
+### Deploy a public demo on Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ArthurNsongan/USSD-Reborn)
 
-`render.yaml` describes a Docker web service with a health check on `/api/health`. No secret is needed.
-The same `Dockerfile` works on Railway or Fly.io, which inject `PORT` the same way. Once deployed,
-`https://<your-app>/ussd` can be used directly as an Africa's Talking USSD callback URL.
+Vercel detects the FastAPI `app` in `main.py` and runs it as a single Vercel Function. `vercel.json`
+builds the simulator first (`frontend/dist`, served by the same app). No secret is needed.
+
+Serverless instances do not share memory or disk, so a USSD session can land on an instance that has
+never seen it. That is fine by design: like Africa's Talking, the simulator always sends the cumulative
+input history (`1*2*1`), and the engine rebuilds a missing session by replaying it. A test checks that
+rebuilt frames are byte-identical (`test_lost_session_is_rebuilt_from_cumulative_text`). The SQLite store
+then acts as a per-instance cache in the temp directory. Two limits remain on serverless: the 180 s
+expiry is only enforced by the instance that holds the session, and the "Sessions" counter is per instance.
+
+Once deployed, `https://<your-app>.vercel.app/ussd` works directly as an Africa's Talking USSD callback URL.
+The `Dockerfile` remains available for container hosts (Railway, Fly.io, Render).
 
 ### Talk to it like a telecom operator
 ```bash

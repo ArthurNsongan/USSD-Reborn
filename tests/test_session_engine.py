@@ -62,6 +62,21 @@ def test_cumulative_text_only_processes_new_segments(dial) -> None:
     assert frame.current_node == "price_product" and frame.context == {"market": "mfoundi"}
 
 
+@pytest.mark.parametrize("app, texts", [
+    (AGRI, ["", "2", "2*1", "2*1*99"]),
+    (AGRI, ["", "7", "7*1", "7*1*0", "7*1*0*00", "7*1*0*00*3*2"]),
+    ("*384*2#", ["", "2", "2*abc", "2*abc*25000", "2*abc*25000*5"]),
+])
+def test_lost_session_is_rebuilt_from_cumulative_text(registry, app, texts) -> None:
+    """Serverless: each request may hit a fresh instance with an empty store. Frames must not change."""
+    stateful = SessionEngine(SessionStore())
+    for text in texts:
+        expected = asyncio.run(stateful.handle(registry.resolve(app), "s", "", text))
+        rebuilt = asyncio.run(SessionEngine(SessionStore()).handle(registry.resolve(app), "s", "", text))
+        assert rebuilt.raw_response == expected.raw_response, text
+        assert rebuilt.current_node == expected.current_node and rebuilt.stack == expected.stack
+
+
 def test_retransmitted_request_returns_same_screen(dial) -> None:
     first = dial(AGRI, "1")
     again = dial(AGRI, "1")

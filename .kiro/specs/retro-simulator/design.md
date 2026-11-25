@@ -33,7 +33,9 @@ flowchart TB
 
 ## Data flow
 1. Dial: new `sessionId`, `POST /ussd` JSON `{session_id, app_id, phone_number, text: preset or "", input_mode: "cumulative"}`.
-2. Send: `POST /ussd` JSON `{..., text: input, input_mode: "step"}`.
+2. Send: `POST /ussd` JSON `{..., text: "1*2*<input>", input_mode: "cumulative"}`. The simulator keeps the
+   full input history like Africa's Talking does, so a serverless instance that never saw the session
+   (Vercel) rebuilds it by replay and returns the same frame.
 3. The webhook tab sends form data `sessionId, serviceCode, phoneNumber, text` and displays the text/plain answer.
 
 ## Theming

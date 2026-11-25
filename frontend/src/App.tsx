@@ -83,6 +83,10 @@ export default function App() {
     return () => window.clearInterval(timer);
   }, [refreshMetrics]);
 
+  // Full input history of the current session, sent like Africa's Talking does ("1*2*1").
+  // A stateless server instance can then rebuild the session by replaying it.
+  const dialedText = useRef("");
+
   const exchange = useCallback(
     async (sid: string, appId: string, text: string, mode: InputMode, label: string) => {
       const seq = ++requestSeq.current;
@@ -97,6 +101,7 @@ export default function App() {
           input_mode: mode,
         });
         if (seq !== requestSeq.current) return;
+        if (mode === "cumulative") dialedText.current = text;
         setFrame(next);
         setHistory((items) => [...items, { at: Date.now(), input: label, roundTripMs, frame: next }]);
         setVisited((items) => [...items, ...next.stack, next.current_node]);
@@ -120,6 +125,7 @@ export default function App() {
       setHistory([]);
       setVisited([]);
       setIdleMessage(null);
+      dialedText.current = "";
       const label = text ? `${target.shortcode.slice(0, -1)}*${text}#` : target.shortcode;
       void exchange(sid, target.id, text, "cumulative", label);
     },
@@ -149,8 +155,9 @@ export default function App() {
   };
 
   const send = (input: string) => {
-    if (!app || frame?.prefix !== "CON") return;
-    void exchange(sessionId, app.id, input, "step", input);
+    if (!app || frame?.prefix !== "CON" || !input) return;
+    const text = dialedText.current ? `${dialedText.current}*${input}` : input;
+    void exchange(sessionId, app.id, text, "cumulative", input);
   };
 
   const hangUp = () => {

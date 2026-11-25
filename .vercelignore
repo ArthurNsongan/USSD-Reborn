@@ -1,0 +1,16 @@
+# Keep local-only files out of `vercel deploy` uploads from this machine.
+.venv
+venv
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite*
+**/__pycache__
+.pytest_cache
+*.egg-info
+frontend/node_modules
+frontend/dist
+IMPLEMENTATION_PLAN.md
+ussd-reborn.md
+ussd-skeleton-crew.md

@@ -5,6 +5,7 @@ Run:  uvicorn main:app --reload --port 8000
 from __future__ import annotations
 
 import os
+import tempfile
 from pathlib import Path
 
 from core.manifest_loader import AppRegistry
@@ -16,9 +17,16 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
 
 
+def default_db_path() -> str:
+    """Serverless platforms (Vercel sets VERCEL=1) only allow writes to the temp directory."""
+    if os.getenv("VERCEL"):
+        return str(Path(tempfile.gettempdir()) / "ussd_sessions.db")
+    return "ussd_sessions.db"
+
+
 def build_app(db_path: str | None = None):
     registry = AppRegistry(ROOT / "apps", ROOT / "schemas" / "app-manifest.schema.json").load()
-    store = SessionStore(db_path or os.getenv("USSD_DB_PATH", "ussd_sessions.db"))
+    store = SessionStore(db_path or os.getenv("USSD_DB_PATH") or default_db_path())
     origins = [o.strip() for o in os.getenv("USSD_CORS_ORIGINS", DEFAULT_ORIGINS).split(",") if o.strip()]
     return create_app(registry, SessionEngine(store), audit=lambda: audit(ROOT / "core"),
                       static_dir=ROOT / "frontend" / "dist", cors_origins=origins)
