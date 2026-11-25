@@ -6,6 +6,11 @@
 **On your phone:** [ussd-reborn.vercel.app/phone](https://ussd-reborn.vercel.app/phone) (full-screen handset).
 No SIM card, no account, no API key.
 
+**Through a real telecom gateway:** open the
+[Africa's Talking simulator](https://simulator.africastalking.com:1517/), enter any phone number, choose
+USSD and dial **`*384*69383#`** (AgriPulse). The request goes through the Africa's Talking sandbox gateway
+to our Vercel webhook, exactly like a live operator session.
+
 In Cameroon and across sub-Saharan Africa, millions of people still use USSD (`*126#`, `#150#`) because
 mobile data is expensive or unreliable outside city centres. USSD menus are usually rigid and hand-coded
 per service. GhostSignal is one small, domain-agnostic engine (`core/`, under 400 logical lines) that runs
@@ -116,10 +121,11 @@ press CALL like on a real phone, or tap the input field for letters (member code
 The simulator speaks exactly the Africa's Talking protocol, so the same deployment answers a real USSD
 gateway. Real dialing needs a shortcode provisioned by an aggregator on each operator:
 
-- **Africa's Talking sandbox (free, works from anywhere):** create a sandbox app, add a USSD channel with
-  the callback URL `https://ussd-reborn.vercel.app/ussd?app=agripulse` (or `?app=tontine-check`), then
-  dial the assigned code in the Africa's Talking web simulator. `?app=` maps the code the sandbox assigns
-  to one of the apps.
+- **Africa's Talking sandbox (free, works from anywhere):** our sandbox channel `*384*69383#` calls
+  `https://ussd-reborn.vercel.app/ussd?app=agripulse`; dial it in the
+  [web simulator](https://simulator.africastalking.com:1517/). To reproduce it with your own account,
+  add a USSD channel with that callback URL (or `?app=tontine-check`). `?app=` maps the code the sandbox
+  assigns to one of the apps.
 - **Live codes:** Africa's Talking publishes live USSD pricing for East African operators (Kenya, Uganda,
   Tanzania, among others). We did not find public live USSD coverage for Cameroon (MTN, Orange). A
   `*xxx#` code dialable in Douala or Yaounde has to be obtained through an operator or a local aggregator,
