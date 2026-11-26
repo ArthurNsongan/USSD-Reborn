@@ -25,11 +25,12 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: clip; /* the levitating phone and the bats must never cause sideways scrolling */
   background-color: #06060a;
   background-image:
-    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--brand-primary) 18%, transparent), transparent 38%),
-    radial-gradient(circle at 82% 24%, color-mix(in srgb, var(--kiro-violet) 12%, transparent), transparent 42%),
-    radial-gradient(circle at 50% 88%, color-mix(in srgb, var(--brand-accent) 10%, transparent), transparent 48%);
+    radial-gradient(circle at 80% 8%, color-mix(in srgb, var(--brand-primary) 11%, transparent), transparent 40%),
+    radial-gradient(circle at 10% 40%, color-mix(in srgb, var(--kiro-violet) 6%, transparent), transparent 45%);
+  background-attachment: fixed;
   color: #f2ece1;
   font-family: var(--font-sans);
   transition: background-image 500ms ease;
@@ -293,12 +294,333 @@ body {
   backdrop-filter: blur(14px);
 }
 
+/* ---- Haunted Manor night scene (fixed, decorative, pointer-events: none) ------- */
+.haunted-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.night-stars {
+  position: absolute;
+  inset: 0 0 35% 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgb(255 255 255 / 0.55), transparent),
+    radial-gradient(1px 1px at 27% 9%, rgb(255 255 255 / 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 41% 27%, rgb(255 255 255 / 0.45), transparent),
+    radial-gradient(1px 1px at 58% 14%, rgb(255 255 255 / 0.5), transparent),
+    radial-gradient(1px 1px at 66% 36%, rgb(255 255 255 / 0.3), transparent),
+    radial-gradient(1.5px 1.5px at 88% 31%, rgb(255 255 255 / 0.4), transparent),
+    radial-gradient(1px 1px at 7% 42%, rgb(255 255 255 / 0.35), transparent),
+    radial-gradient(1px 1px at 33% 48%, rgb(255 255 255 / 0.25), transparent);
+  animation: twinkle 7s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+
+.spectral-moon {
+  position: absolute;
+  top: 9vh;
+  right: 7vw;
+  width: clamp(150px, 19vw, 270px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  opacity: 0.62;
+  background-color: color-mix(in srgb, var(--screen-text) 26%, #ebe6d8);
+  background-image:
+    radial-gradient(circle at 30% 34%, rgb(0 0 0 / 0.1) 0 7%, transparent 8%),
+    radial-gradient(circle at 62% 58%, rgb(0 0 0 / 0.08) 0 11%, transparent 12%),
+    radial-gradient(circle at 44% 72%, rgb(0 0 0 / 0.07) 0 5%, transparent 6%),
+    radial-gradient(circle at 72% 30%, rgb(0 0 0 / 0.06) 0 4%, transparent 5%),
+    radial-gradient(circle at 70% 70%, rgb(0 0 0 / 0.34), transparent 62%);
+  box-shadow:
+    0 0 70px 18px color-mix(in srgb, var(--screen-text) 26%, transparent),
+    0 0 220px 70px color-mix(in srgb, var(--screen-text) 10%, transparent);
+  transition: background-color 900ms ease, box-shadow 900ms ease;
+}
+
+@media (max-width: 640px) {
+  .spectral-moon {
+    top: 7vh;
+    right: -6vw;
+    width: 120px;
+    opacity: 0.4;
+  }
+}
+
+.manor-horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(140px, 23vh, 240px);
+}
+
+.manor-horizon .manor-body {
+  fill: #0e0e18;
+  stroke: color-mix(in srgb, var(--screen-text) 9%, transparent);
+  stroke-width: 1;
+  transition: stroke 900ms ease;
+}
+
+.manor-windows > * {
+  fill: var(--screen-text);
+  opacity: 0.16;
+  animation: window-flicker 6s steps(1) infinite;
+  transition: fill 900ms ease;
+}
+
+@keyframes window-flicker {
+  0%, 70%, 100% { opacity: 0.16; }
+  72% { opacity: 0.05; }
+  74% { opacity: 0.22; }
+  86% { opacity: 0.1; }
+}
+
+.tower-light {
+  fill: var(--screen-text);
+  animation: blink 1.8s infinite;
+}
+
+.radio-wave {
+  fill: none;
+  stroke: var(--screen-text);
+  stroke-width: 1.4;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: radio-wave 2.7s ease-out infinite;
+}
+
+@keyframes radio-wave {
+  from { transform: scale(0.6); opacity: 0.7; }
+  to { transform: scale(4.5); opacity: 0; }
+}
+
+.ground-fog {
+  position: absolute;
+  left: 0;
+  bottom: -4vh;
+  width: 200%;
+  height: 26vh;
+  background:
+    radial-gradient(ellipse 22% 60% at 15% 70%, rgb(210 210 235 / 0.07), transparent 70%),
+    radial-gradient(ellipse 18% 50% at 40% 80%, rgb(210 210 235 / 0.06), transparent 70%),
+    radial-gradient(ellipse 25% 60% at 65% 75%, rgb(210 210 235 / 0.07), transparent 70%),
+    radial-gradient(ellipse 20% 55% at 90% 80%, rgb(210 210 235 / 0.06), transparent 70%);
+  filter: blur(10px);
+  animation: fog-drift 70s linear infinite;
+}
+
+.ground-fog-slow {
+  bottom: -8vh;
+  opacity: 0.8;
+  background:
+    radial-gradient(ellipse 25% 55% at 25% 75%, color-mix(in srgb, var(--screen-text) 7%, transparent), transparent 70%),
+    radial-gradient(ellipse 22% 50% at 75% 80%, color-mix(in srgb, var(--screen-text) 6%, transparent), transparent 70%);
+  animation-duration: 110s;
+  animation-direction: reverse;
+}
+
+@keyframes fog-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---- Bats ------------------------------------------------------------------------ */
+.bat {
+  fill: #06060a;
+  overflow: visible;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--screen-text) 45%, transparent));
+}
+
+.bat-wings {
+  transform-origin: 50% 45%;
+  transform-box: fill-box;
+  animation: bat-flap 0.24s ease-in-out infinite alternate;
+}
+
+@keyframes bat-flap {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0.28); }
+}
+
+.bat-sky {
+  position: absolute;
+  inset: 0;
+}
+
+.bat-flight {
+  position: absolute;
+  top: var(--bat-top);
+  left: 0;
+  animation: bat-cross var(--bat-dur) linear var(--bat-delay) infinite;
+}
+
+.bat-flight-reverse {
+  animation-name: bat-cross-reverse;
+}
+
+.bat-flight-reverse .bat {
+  transform: scaleX(-1);
+}
+
+@keyframes bat-cross {
+  from { transform: translateX(-12vw); }
+  to { transform: translateX(112vw); }
+}
+
+@keyframes bat-cross-reverse {
+  from { transform: translateX(112vw); }
+  to { transform: translateX(-12vw); }
+}
+
+.bat-bob {
+  animation: bat-bob 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes bat-bob {
+  from { transform: translateY(0) rotate(-4deg); }
+  to { transform: translateY(-34px) rotate(5deg); }
+}
+
+.bat-burst-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bat-burst {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* ---- Levitating 3D Poltergeist handset ---------------------------------------- */
+.phone-stage {
+  position: relative;
+  perspective: 1100px;
+}
+
+.phone-3d {
+  transform-style: preserve-3d;
+}
+
+.phone-3d .bezel {
+  transform-style: preserve-3d;
+}
+
+.depth-screen {
+  transform: translateZ(18px);
+}
+
+.depth-keys {
+  transform: translateZ(24px);
+  transform-style: preserve-3d;
+}
+
+.phone-3d .antenna-stub {
+  transform: translateZ(30px);
+}
+
+.phone-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 32%) var(--gy, 18%), rgb(255 255 255 / 0.13), transparent 42%);
+  mix-blend-mode: screen;
+  transform: translateZ(20px);
+}
+
+.phone-aura {
+  position: absolute;
+  inset: 8% -10% 14%;
+  z-index: -1;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at 50% 42%, color-mix(in srgb, var(--screen-text) 24%, transparent), transparent 66%);
+  filter: blur(34px);
+  animation: aura-pulse 4.5s ease-in-out infinite;
+  transition: background 600ms ease;
+}
+
+.phone-aura-surge {
+  animation: aura-surge 1.1s ease-out;
+}
+
+@keyframes aura-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.97); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes aura-surge {
+  0% { opacity: 1; transform: scale(1.3); filter: blur(24px); }
+  100% { opacity: 0.65; transform: scale(1); filter: blur(34px); }
+}
+
+.phone-shadow {
+  margin: 22px auto 0;
+  width: 68%;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--screen-text) 16%, rgb(0 0 0 / 0.75)), transparent 70%);
+  filter: blur(7px);
+}
+
+.lcd-alert {
+  box-shadow:
+    0 0 0 2px #f43f5e,
+    0 0 34px #f43f5e99;
+  animation: alert-blink 0.22s steps(2) 6;
+}
+
+@keyframes alert-blink {
+  50% { box-shadow: 0 0 0 2px transparent, 0 0 8px transparent; }
+}
+
+.beam-pulse {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 26px;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 999px;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, var(--screen-text));
+  box-shadow: 0 0 12px var(--screen-text);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lcd-haunted::after,
   .led-2g,
   .antenna-ring-active,
   .antenna-ring-active-delayed,
-  .crt-degauss {
+  .crt-degauss,
+  .night-stars,
+  .manor-windows > *,
+  .tower-light,
+  .radio-wave,
+  .ground-fog,
+  .bat-wings,
+  .bat-flight,
+  .bat-bob,
+  .phone-aura,
+  .phone-aura-surge,
+  .lcd-alert {
     animation: none !important;
+  }
+
+  .bat-sky,
+  .radio-wave {
+    display: none;
   }
 }

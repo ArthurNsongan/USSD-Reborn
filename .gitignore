@@ -154,7 +154,7 @@ tmp/
 temp/
 *.tmp
 *.bak
-IMPLEMENTATION_PLAN.md
+IMPLEMENTATION_PLAN*.md
 ussd-reborn.md
 ussd-skeleton-crew.md
 
@@ -169,6 +169,6 @@ desktop.ini
 $RECYCLE.BIN/
 
 # --- Local French planning drafts (kept on disk, not published) ---
-IMPLEMENTATION_PLAN.md
+IMPLEMENTATION_PLAN*.md
 ussd-reborn.md
 ussd-skeleton-crew.md
