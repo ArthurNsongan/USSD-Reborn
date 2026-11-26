@@ -2,16 +2,16 @@
   "id": "agripulse",
   "name": "AgriPulse CM",
   "tagline": "Food market prices, cocoa disease diagnosis and farm weather for Cameroonian growers.",
-  "shortcode": "*384*1#",
+  "shortcode": "*384*3#",
   "version": "1.1.0",
   "locale": "en-CM",
   "entryNode": "home",
   "theme": {
-    "primaryColor": "#16a34a",
-    "accentColor": "#86efac",
-    "screenBg": "#06140b",
-    "screenText": "#39ff7a",
-    "bezelColor": "#14231a",
+    "primaryColor": "#0d9488",
+    "accentColor": "#99f6e4",
+    "screenBg": "#041314",
+    "screenText": "#2dd4bf",
+    "bezelColor": "#112224",
     "badgeLabel": "AGRI 2G",
     "icon": "🌱"
   },
@@ -23,7 +23,7 @@
     "nextPageLabel": "99. More",
     "backLabel": "0. Back",
     "invalidMessage": "Invalid choice.",
-    "expiredMessage": "Session expired. Dial *384*1# again.",
+    "expiredMessage": "Session expired. Dial *384*3# again.",
     "errorMessage": "Service unavailable. Try again."
   },
   "compression": {
@@ -58,7 +58,7 @@
   "nodes": {
     "home": {
       "type": "menu",
-      "title": "AgriPulse CM (*384*1#)",
+      "title": "AgriPulse CM (*384*3#)",
       "options": [
         { "key": "1", "label": "Food prices", "next": "price_market" },
         { "key": "2", "label": "Cocoa diagnosis", "next": "cocoa_symptom" },

@@ -25,8 +25,11 @@ FORBIDDEN_TERMS: tuple[str, ...] = (
     # community finance
     "tontine", "cotisation", "quittance", "penalite", "beneficiaire", "cagnotte", "caisse",
     "njangi", "payout",
-    # health
+    # health / pharmacy
     "pharmacie", "pharmacy", "mediguide", "posologie", "dosage", "medic",
+    "nightrx", "insulin", "ventolin", "amoxicillin", "counterfeit", "triage",
+    # food delivery
+    "bite2g", "burger", "courier", "voucher", "mamaput",
 )
 
 

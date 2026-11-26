@@ -36,4 +36,4 @@ def test_loc_counter_ignores_blanks_comments_and_docstrings(tmp_path: Path) -> N
 
 
 def test_forbidden_terms_cover_both_apps() -> None:
-    assert {"cacao", "plantain", "tontine", "quittance", "fcfa", "sandaga"} <= set(FORBIDDEN_TERMS)
+    assert {"cacao", "plantain", "tontine", "quittance", "fcfa", "sandaga", "nightrx", "insulin", "bite2g", "burger"} <= set(FORBIDDEN_TERMS)

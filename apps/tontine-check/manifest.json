@@ -2,16 +2,16 @@
   "id": "tontine-check",
   "name": "Tontine-Check",
   "tagline": "Payout turns, late penalties, relief fund and verifiable receipts for njangi savings groups.",
-  "shortcode": "*384*2#",
+  "shortcode": "*384*4#",
   "version": "1.1.0",
   "locale": "en-CM",
   "entryNode": "home",
   "theme": {
-    "primaryColor": "#d97706",
-    "accentColor": "#fde68a",
-    "screenBg": "#140e04",
-    "screenText": "#ffb830",
-    "bezelColor": "#2a1d0c",
+    "primaryColor": "#9333ea",
+    "accentColor": "#e9d5ff",
+    "screenBg": "#11071a",
+    "screenText": "#c084fc",
+    "bezelColor": "#221130",
     "badgeLabel": "NJANGI 2G",
     "icon": "🪙"
   },
@@ -23,7 +23,7 @@
     "nextPageLabel": "99. More",
     "backLabel": "0. Back",
     "invalidMessage": "Invalid choice.",
-    "expiredMessage": "Session expired. Dial *384*2# again.",
+    "expiredMessage": "Session expired. Dial *384*4# again.",
     "errorMessage": "Service unavailable. Try again."
   },
   "compression": {
@@ -46,7 +46,7 @@
   "nodes": {
     "home": {
       "type": "menu",
-      "title": "TontineCheck (*384*2#)",
+      "title": "TontineCheck (*384*4#)",
       "options": [
         { "key": "1", "label": "My payout turn", "next": "turn_member" },
         { "key": "2", "label": "Late penalty calculator", "next": "penalty_amount" },

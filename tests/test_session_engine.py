@@ -10,7 +10,8 @@ from core.manifest_loader import AppRegistry, ManifestError
 from core.session_engine import SessionEngine, SessionStore
 from tests.conftest import SCHEMA, minimal_manifest
 
-AGRI = "*384*1#"
+AGRI = "*384*3#"
+TONTINE = "*384*4#"
 
 
 def test_empty_text_starts_on_entry_node(dial) -> None:
@@ -65,7 +66,7 @@ def test_cumulative_text_only_processes_new_segments(dial) -> None:
 @pytest.mark.parametrize("app, texts", [
     (AGRI, ["", "2", "2*1", "2*1*99"]),
     (AGRI, ["", "7", "7*1", "7*1*0", "7*1*0*00", "7*1*0*00*3*2"]),
-    ("*384*2#", ["", "2", "2*abc", "2*abc*25000", "2*abc*25000*5"]),
+    (TONTINE, ["", "2", "2*abc", "2*abc*25000", "2*abc*25000*5"]),
 ])
 def test_lost_session_is_rebuilt_from_cumulative_text(registry, app, texts) -> None:
     """Serverless: each request may hit a fresh instance with an empty store. Frames must not change."""
@@ -102,19 +103,19 @@ def test_next_page_key_without_more_pages_is_invalid(dial) -> None:
 
 
 def test_input_validation_error_message(dial) -> None:
-    frame = dial("*384*2#", "2*abc")
+    frame = dial(TONTINE, "2*abc")
     assert frame.current_node == "penalty_amount" and frame.body.startswith("Invalid amount")
-    frame = dial("*384*2#", "2*100", sid="low")
+    frame = dial(TONTINE, "2*100", sid="low")
     assert frame.current_node == "penalty_amount"
 
 
 def test_numeric_input_is_stored_as_number(dial) -> None:
-    frame = dial("*384*2#", "2*25000")
+    frame = dial(TONTINE, "2*25000")
     assert frame.context["amount"] == 25000 and "Amount: 25000 FCFA" in frame.body
 
 
 def test_code_input_is_upper_cased(dial) -> None:
-    assert "M03 Mbarga Aline" in dial("*384*2#", "1*m03").body
+    assert "M03 Mbarga Aline" in dial(TONTINE, "1*m03").body
 
 
 def test_session_expires_after_timeout(dial, clock, engine) -> None:

@@ -98,7 +98,8 @@ export function FullscreenPhone() {
   // Boot: ?app=<id> or ?dial=*384*2# picks the service, otherwise the first app is dialed.
   useEffect(() => {
     fetchApps()
-      .then((list) => {
+      .then((rawList) => {
+        const list = [...rawList].sort((a, b) => a.shortcode.localeCompare(b.shortcode));
         setApps(list);
         const params = new URLSearchParams(window.location.search);
         const fromDial = params.get("dial") ? parseDial(list, params.get("dial") ?? "") : null;

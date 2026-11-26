@@ -1,0 +1,105 @@
+{
+  "sealSecret": "nightrx-gsm-lot-key-2026",
+  "pharmacies": {
+    "akwa": {
+      "name": "St-Martin 24/7 Pharmacy",
+      "district": "Akwa Blvd, opp. Central Post",
+      "phone": "+237 699 10 22 40",
+      "dutyUntil": "08:00 AM",
+      "stockNote": "Insulin, Ventolin, Anti-venom, ORS in stock"
+    },
+    "bonapriso": {
+      "name": "Lagoon Night Pharmacy",
+      "district": "Bonapriso Hydrocarbures Jct",
+      "phone": "+237 677 44 19 05",
+      "dutyUntil": "08:00 AM",
+      "stockNote": "Pediatric kit, Epinephrine, Insulin in stock"
+    },
+    "makepe": {
+      "name": "Makepe Crossroad Pharmacy",
+      "district": "Makepe BM, 100m from roundabout",
+      "phone": "+237 694 81 30 12",
+      "dutyUntil": "07:30 AM",
+      "stockNote": "Malaria ACT, Ventolin, Antibiotics in stock"
+    },
+    "bastos": {
+      "name": "Central Bastos 24/7",
+      "district": "Yaounde Bastos Embassy Ave",
+      "phone": "+237 655 09 71 88",
+      "dutyUntil": "08:00 AM",
+      "stockNote": "Full emergency & cold-chain stock active"
+    }
+  },
+  "medicines": {
+    "insulin": {
+      "label": "Insulin Glargine 100U pen",
+      "price": 14500,
+      "stock": { "akwa": 6, "bonapriso": 4, "bastos": 9 },
+      "note": "Cold-chain pouch included"
+    },
+    "ventolin": {
+      "label": "Ventolin 100mcg Inhaler",
+      "price": 3800,
+      "stock": { "akwa": 15, "bonapriso": 11, "bastos": 18 },
+      "note": "200 metered doses"
+    },
+    "amoxicillin": {
+      "label": "Amoxicillin 500mg (12 caps)",
+      "price": 2400,
+      "stock": { "akwa": 24, "bonapriso": 19, "bastos": 30 },
+      "note": "Bring prescription or ID at window"
+    },
+    "ors": {
+      "label": "Pediatric ORS + Zinc Kit",
+      "price": 1200,
+      "stock": { "akwa": 40, "bonapriso": 32, "bastos": 50 },
+      "note": "3 sachets + 10 dispersible tablets"
+    }
+  },
+  "seals": {
+    "RX-2026-841": {
+      "drug": "Coartem 80/480mg (6 tabs)",
+      "batch": "LOT-CM94",
+      "expiry": "11/2027",
+      "scans": 1,
+      "signature": "41351BA3"
+    },
+    "RX-2026-512": {
+      "drug": "Amoxiclav 1g (14 tabs)",
+      "batch": "LOT-EU18",
+      "expiry": "08/2027",
+      "scans": 1,
+      "signature": "4C1EB1D4"
+    },
+    "RX-2026-860": {
+      "drug": "Coartem 80/480mg (6 tabs)",
+      "batch": "LOT-CM94",
+      "expiry": "11/2027",
+      "scans": 47,
+      "signature": "0000DEAD"
+    }
+  },
+  "triage": [
+    {
+      "topic": "fever",
+      "keywords": ["fever", "39c", "38c", "40c", "temperature", "paracetamol", "child"],
+      "answer": "Child fever triage (14kg): max paracetamol dose is 15mg/kg (210mg) every 6 hours, max 4 doses/24h. Cool with lukewarm water, give small sips of ORS, avoid aspirin. Go to emergency immediately if neck stiffness, convulsions, breathing distress or fever above 40C."
+    },
+    {
+      "topic": "burn",
+      "keywords": ["burn", "boiling", "scald", "fire", "oil", "blister"],
+      "answer": "Thermal burn protocol: cool under clean running water for 15 minutes immediately. Remove rings or tight clothes before swelling. Never apply butter, oil, toothpaste or ice. Cover loosely with sterile gauze and seek clinic care if blister exceeds palm size."
+    },
+    {
+      "topic": "asthma",
+      "keywords": ["asthma", "wheezing", "breath", "ventolin", "inhaler", "chest"],
+      "answer": "Acute wheezing protocol: sit upright, stay calm, take 2 puffs of Ventolin spacer (1 puff every 30s up to 4 puffs if severe). If no relief within 10 minutes or lips turn blue, call emergency transport immediately."
+    },
+    {
+      "topic": "dehydration",
+      "keywords": ["diarrhea", "vomiting", "dehydration", "ors", "stomach", "cholera"],
+      "answer": "Dehydration protocol: dissolve 1 ORS sachet in 1L clean water. Give frequent small sips after every loose stool, plus 20mg Zinc daily for 10 days. Go to hospital if sunken eyes, lethargy, blood in stool or inability to drink."
+    }
+  ],
+  "defaultTriage": "General 2G triage: rest, hydrate with clean water or ORS, check temperature every 4h, and visit the nearest 24/7 duty pharmacy (Option 1) or emergency clinic if symptoms worsen."
+}

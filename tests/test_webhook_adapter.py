@@ -14,7 +14,7 @@ def _form(client: TestClient, session: str, code: str, text: str):
 
 
 def _json(client: TestClient, session: str, text: str, **extra):
-    payload = {"session_id": session, "service_code": "*384*2#", "phone_number": "+237690000000", "text": text}
+    payload = {"session_id": session, "service_code": "*384*4#", "phone_number": "+237690000000", "text": text}
     return client.post("/ussd", json={**payload, **extra})
 
 
@@ -22,13 +22,13 @@ def test_africas_talking_form_returns_plain_text_frame(client: TestClient) -> No
     reply = _form(client, "AT-1", "*384*1#", "")
     assert reply.status_code == 200
     assert reply.headers["content-type"].startswith("text/plain")
-    assert reply.text.startswith("CON AgriPulse CM") and len(reply.text) <= 160
+    assert reply.text.startswith("CON NightRx 24/7") and len(reply.text) <= 160
 
 
 def test_africas_talking_cumulative_session(client: TestClient) -> None:
     for text in ("", "1", "1*1"):
-        assert _form(client, "AT-2", "*384*1#", text).text.startswith("CON")
-    final = _form(client, "AT-2", "*384*1#", "1*1*1")
+        assert _form(client, "AT-2", "*384*3#", text).text.startswith("CON")
+    final = _form(client, "AT-2", "*384*3#", "1*1*1")
     assert final.text.startswith("END Plantain - Douala Sandaga")
 
 
@@ -43,7 +43,7 @@ def test_json_returns_rich_frame(client: TestClient) -> None:
 
 def test_form_and_json_are_byte_identical(client: TestClient) -> None:
     for text in ("", "3", "4*QT-2026-841", "2*25000*40"):
-        form = _form(client, f"F-{text}", "*384*2#", text).text
+        form = _form(client, f"F-{text}", "*384*4#", text).text
         as_json = _json(client, f"J-{text}", text).json()["raw_response"]
         assert form == as_json
 
@@ -85,13 +85,13 @@ def test_form_without_session_id_is_rejected(client: TestClient) -> None:
 
 def test_api_apps_exposes_themes_and_graph(client: TestClient) -> None:
     apps = client.get("/api/apps").json()
-    assert [a["shortcode"] for a in apps] == ["*384*1#", "*384*2#"]
-    assert apps[0]["theme"]["screenText"] != apps[1]["theme"]["screenText"]
+    assert sorted(a["shortcode"] for a in apps) == ["*384*1#", "*384*2#", "*384*3#", "*384*4#"]
+    assert len({a["theme"]["screenText"] for a in apps}) == 4
     assert all(a["nodes"][a["entryNode"]]["type"] == "menu" and a["quickPresets"] for a in apps)
 
 
 def test_health_and_metrics(client: TestClient) -> None:
-    assert client.get("/api/health").json() == {"status": "ok", "apps": 2}
+    assert client.get("/api/health").json() == {"status": "ok", "apps": 4}
     _form(client, "M-1", "*384*1#", "")
     metrics = client.get("/api/metrics").json()
-    assert metrics["apps_loaded"] == 2 and metrics["active_sessions"] >= 1 and metrics["core_loc"] == 1
+    assert metrics["apps_loaded"] == 4 and metrics["active_sessions"] >= 1 and metrics["core_loc"] == 1

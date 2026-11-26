@@ -1,0 +1,81 @@
+{
+  "deliveryFee": 500,
+  "kitchens": {
+    "mamaput": {
+      "name": "Mama Put Grill",
+      "etaMin": 18,
+      "meals": {
+        "sig": { "title": "Poulet DG + Ripe Plantain", "price": 3500 },
+        "fire": { "title": "Charcoal Suya Beef + Bobolo", "price": 2800 },
+        "feast": { "title": "Braised Bar Fish + Ndole", "price": 4500 }
+      }
+    },
+    "smash": {
+      "name": "Ghost SmashBurger",
+      "etaMin": 15,
+      "meals": {
+        "sig": { "title": "Double Smash + Crispy Fries", "price": 3500 },
+        "fire": { "title": "Habanero Crispy Chicken", "price": 2800 },
+        "feast": { "title": "Triple Bacon Monster Box", "price": 4500 }
+      }
+    },
+    "wok": {
+      "name": "Midnight Wok",
+      "etaMin": 22,
+      "meals": {
+        "sig": { "title": "Szechuan Beef Fire Noodles", "price": 3500 },
+        "fire": { "title": "Garlic Chili Tofu + Rice", "price": 2800 },
+        "feast": { "title": "King Prawn Fried Rice XXL", "price": 4500 }
+      }
+    }
+  },
+  "orders": {
+    "ORD-402": {
+      "status": "ON MOTO (5 min away)",
+      "meal": "Poulet DG + Ripe Plantain x2",
+      "rider": "Musa B. (Moto LT-884)",
+      "phone": "+237 690 44 12 09",
+      "pin": "84",
+      "total": 7500
+    },
+    "ORD-519": {
+      "status": "ON GRILL (packing now)",
+      "meal": "Double Smash + Crispy Fries x1",
+      "rider": "Assigning nearest rider",
+      "phone": "+237 671 00 52 10",
+      "pin": "39",
+      "total": 4000
+    },
+    "ORD-880": {
+      "status": "DELIVERED at 21:14",
+      "meal": "Szechuan Beef Fire Noodles x1",
+      "rider": "Eric T. (PIN verified)",
+      "phone": "+237 655 18 90 02",
+      "pin": "17",
+      "total": 4000
+    }
+  },
+  "vouchers": {
+    "KIRO26": { "discount": "25% OFF (up to 2 000 FCFA)", "validUntil": "30/11/2026", "minOrder": 2500 },
+    "NIGHTFREE": { "discount": "FREE Moto Delivery (500 FCFA)", "validUntil": "31/12/2026", "minOrder": 2000 },
+    "BITE500": { "discount": "500 FCFA instant rebate", "validUntil": "15/12/2026", "minOrder": 2800 }
+  },
+  "cravingRules": [
+    {
+      "tag": "spicy_protein",
+      "keywords": ["spicy", "protein", "meat", "beef", "suya", "3500", "cheap"],
+      "answer": "Best match under 3 500 FCFA: Mama Put Charcoal Suya Beef + Bobolo (2 800 FCFA + 500 delivery = 3 300 FCFA, 42g protein, fiery suya spice). Dial *384*2*1*1*2# to order in 18 minutes."
+    },
+    {
+      "tag": "burger_late",
+      "keywords": ["burger", "fries", "cheese", "smash", "fast", "quick"],
+      "answer": "Fastest hot meal (15 min): Ghost SmashBurger Double Smash + Crispy Fries (3 500 FCFA). Smashed beef patties, cheddar, house smoky sauce. Dial *384*2*1*2*1#."
+    },
+    {
+      "tag": "vegan_light",
+      "keywords": ["vegan", "vegetarian", "tofu", "light", "veggie", "noodles"],
+      "answer": "Plant-based pick: Midnight Wok Garlic Chili Tofu + Jasmine Rice (2 800 FCFA, 22 min delivery). Wok-seared organic tofu, ginger & roasted sesame. Dial *384*2*1*3*2#."
+    }
+  ],
+  "defaultCraving": "Chef's 2G Pick: Mama Put Poulet DG + Ripe Plantain (3 500 FCFA, 18 min delivery). Use code KIRO26 for 25% off!"
+}

@@ -1,0 +1,134 @@
+{
+  "id": "night-rx",
+  "name": "NightRx 24/7",
+  "tagline": "24/7 duty pharmacies, urgent medicine hold, SHA-256 anti-counterfeit seal check and AI triage.",
+  "shortcode": "*384*1#",
+  "version": "1.0.0",
+  "locale": "en-CM",
+  "entryNode": "home",
+  "theme": {
+    "primaryColor": "#10b981",
+    "accentColor": "#6ee7b7",
+    "screenBg": "#04130d",
+    "screenText": "#39ff88",
+    "bezelColor": "#11221b",
+    "badgeLabel": "PHARMA 2G",
+    "icon": "💊"
+  },
+  "navigation": {
+    "backKey": "0",
+    "homeKey": "00",
+    "nextPageKey": "99",
+    "sessionTimeoutSec": 180,
+    "nextPageLabel": "99. More",
+    "backLabel": "0. Back",
+    "invalidMessage": "Invalid choice.",
+    "expiredMessage": "Session expired. Dial *384*1# again.",
+    "errorMessage": "Service unavailable. Try again."
+  },
+  "compression": {
+    "abbreviations": {
+      "paracetamol": "paracet.",
+      "amoxicillin": "amoxic.",
+      "immediately": "immed.",
+      "temperature": "temp.",
+      "tablespoon": "tbsp",
+      "teaspoon": "tsp",
+      "milligrams": "mg",
+      "millilitres": "ml",
+      "dehydration": "dehydr.",
+      "hospital": "hosp.",
+      "emergency": "emerg.",
+      "every": "q",
+      "hours": "h",
+      "minutes": "min"
+    }
+  },
+  "quickPresets": [
+    { "label": "Open 24/7 pharmacy in Akwa", "inputs": "1*1" },
+    { "label": "Hold Insulin pen (2h pickup)", "inputs": "2*1*1" },
+    { "label": "Genuine drug seal RX-2026-841", "inputs": "3*RX-2026-841" },
+    { "label": "Fake drug seal RX-2026-860", "inputs": "3*RX-2026-860" },
+    { "label": "AI triage: child high fever", "inputs": "4*high fever 39C child 14kg" }
+  ],
+  "nodes": {
+    "home": {
+      "type": "menu",
+      "title": "NightRx 24/7 (*384*1#)",
+      "options": [
+        { "key": "1", "label": "Open 24/7 pharmacies", "next": "duty_zone" },
+        { "key": "2", "label": "Reserve urgent medicine", "next": "hold_zone" },
+        { "key": "3", "label": "Verify drug box seal", "next": "seal_input" },
+        { "key": "4", "label": "AI symptom & dosage help", "next": "triage_input" }
+      ]
+    },
+    "duty_zone": {
+      "type": "menu",
+      "title": "24/7 Duty Pharmacy - District:",
+      "options": [
+        { "key": "1", "label": "Akwa & Downtown", "next": "duty_result", "set": { "zone": "akwa" } },
+        { "key": "2", "label": "Bonapriso & Airport", "next": "duty_result", "set": { "zone": "bonapriso" } },
+        { "key": "3", "label": "Makepe & North", "next": "duty_result", "set": { "zone": "makepe" } },
+        { "key": "4", "label": "Bastos (Yaounde)", "next": "duty_result", "set": { "zone": "bastos" } }
+      ]
+    },
+    "duty_result": {
+      "type": "action",
+      "handler": "find_duty_pharmacy",
+      "end": true
+    },
+    "hold_zone": {
+      "type": "menu",
+      "title": "2h Medicine Hold - Pharmacy:",
+      "options": [
+        { "key": "1", "label": "Akwa (St-Martin 24/7)", "next": "hold_med", "set": { "zone": "akwa" } },
+        { "key": "2", "label": "Bonapriso (Lagoon 24/7)", "next": "hold_med", "set": { "zone": "bonapriso" } },
+        { "key": "3", "label": "Bastos (Central 24/7)", "next": "hold_med", "set": { "zone": "bastos" } }
+      ]
+    },
+    "hold_med": {
+      "type": "menu",
+      "title": "Select urgent medicine:",
+      "options": [
+        { "key": "1", "label": "Insulin Glargine pen", "next": "hold_result", "set": { "med": "insulin" } },
+        { "key": "2", "label": "Ventolin 100mcg inhaler", "next": "hold_result", "set": { "med": "ventolin" } },
+        { "key": "3", "label": "Amoxicillin 500mg pack", "next": "hold_result", "set": { "med": "amoxicillin" } },
+        { "key": "4", "label": "Pediatric ORS + Zinc kit", "next": "hold_result", "set": { "med": "ors" } }
+      ]
+    },
+    "hold_result": {
+      "type": "action",
+      "handler": "reserve_medicine",
+      "end": true
+    },
+    "seal_input": {
+      "type": "input",
+      "prompt": "Scratch box seal & enter code (e.g. RX-2026-841):",
+      "saveAs": "seal_code",
+      "next": "seal_result",
+      "example": "RX-2026-841",
+      "validation": { "kind": "code", "pattern": "^RX-[0-9]{4}-[0-9]{3}$" },
+      "errorMessage": "Expected format: RX-2026-841"
+    },
+    "seal_result": {
+      "type": "action",
+      "handler": "verify_drug_seal",
+      "end": true
+    },
+    "triage_input": {
+      "type": "input",
+      "prompt": "Symptom or dosage question (e.g. fever 39C child 14kg):",
+      "saveAs": "symptom_query",
+      "next": "triage_result",
+      "example": "high fever 39C child 14kg",
+      "validation": { "kind": "text", "pattern": "^.{3,80}$" },
+      "errorMessage": "Text too short or too long (3-80)."
+    },
+    "triage_result": {
+      "type": "action",
+      "handler": "ai_triage",
+      "useAiCompression": true,
+      "end": true
+    }
+  }
+}

@@ -1,9 +1,9 @@
-"""End-to-end AgriPulse (*384*1#) journeys."""
+"""End-to-end AgriPulse (*384*3#) journeys."""
 from __future__ import annotations
 
 import pytest
 
-APP = "*384*1#"
+APP = "*384*3#"
 
 
 @pytest.mark.parametrize("path, expected", [

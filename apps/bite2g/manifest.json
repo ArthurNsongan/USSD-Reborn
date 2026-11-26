@@ -1,0 +1,144 @@
+{
+  "id": "bite2g",
+  "name": "Bite2G Delivery",
+  "tagline": "Order hot meals, track moto riders with a 2-digit security PIN and match cravings over 2G USSD.",
+  "shortcode": "*384*2#",
+  "version": "1.0.0",
+  "locale": "en-CM",
+  "entryNode": "home",
+  "theme": {
+    "primaryColor": "#f97316",
+    "accentColor": "#fed7aa",
+    "screenBg": "#160b03",
+    "screenText": "#ffb224",
+    "bezelColor": "#291608",
+    "badgeLabel": "FOOD 2G",
+    "icon": "🍔"
+  },
+  "navigation": {
+    "backKey": "0",
+    "homeKey": "00",
+    "nextPageKey": "99",
+    "sessionTimeoutSec": 180,
+    "nextPageLabel": "99. More",
+    "backLabel": "0. Back",
+    "invalidMessage": "Invalid choice.",
+    "expiredMessage": "Session expired. Dial *384*2# again.",
+    "errorMessage": "Service unavailable. Try again."
+  },
+  "compression": {
+    "abbreviations": {
+      "delivery": "deliv.",
+      "minutes": "min",
+      "plantain": "plant.",
+      "marinated": "marin.",
+      "charcoal": "charc.",
+      "protein": "prot.",
+      "included": "incl.",
+      "kitchen": "kitch."
+    }
+  },
+  "quickPresets": [
+    { "label": "Order Poulet DG x2 to Akwa", "inputs": "1*1*1*2*Akwa Total Gate" },
+    { "label": "Order Double SmashBurger", "inputs": "1*2*1*1*Bonapriso Pharmacy" },
+    { "label": "Track moto rider ORD-402", "inputs": "2*ORD-402" },
+    { "label": "AI craving: spicy under 3500", "inputs": "3*spicy high protein under 3500" },
+    { "label": "Apply voucher KIRO26", "inputs": "4*KIRO26" }
+  ],
+  "nodes": {
+    "home": {
+      "type": "menu",
+      "title": "Bite2G Delivery (*384*2#)",
+      "options": [
+        { "key": "1", "label": "Order hot meal", "next": "pick_kitchen" },
+        { "key": "2", "label": "Track active rider", "next": "track_input" },
+        { "key": "3", "label": "AI craving matcher", "next": "craving_input" },
+        { "key": "4", "label": "Check promo voucher", "next": "promo_input" }
+      ]
+    },
+    "pick_kitchen": {
+      "type": "menu",
+      "title": "Select open kitchen:",
+      "options": [
+        { "key": "1", "label": "Mama Put Grill (18m)", "next": "pick_meal", "set": { "kitchen": "mamaput" } },
+        { "key": "2", "label": "Ghost SmashBurger (15m)", "next": "pick_meal", "set": { "kitchen": "smash" } },
+        { "key": "3", "label": "Midnight Wok (22m)", "next": "pick_meal", "set": { "kitchen": "wok" } }
+      ]
+    },
+    "pick_meal": {
+      "type": "menu",
+      "title": "Choose combo meal:",
+      "options": [
+        { "key": "1", "label": "Signature Special (3500)", "next": "meal_qty", "set": { "tier": "sig" } },
+        { "key": "2", "label": "Fire Grill Box (2800)", "next": "meal_qty", "set": { "tier": "fire" } },
+        { "key": "3", "label": "Night Owl Feast (4500)", "next": "meal_qty", "set": { "tier": "feast" } }
+      ]
+    },
+    "meal_qty": {
+      "type": "input",
+      "prompt": "Quantity (1 to 9 packs):",
+      "saveAs": "qty",
+      "next": "drop_landmark",
+      "example": "2",
+      "validation": { "kind": "numeric", "min": 1, "max": 9 },
+      "errorMessage": "Enter quantity between 1 and 9."
+    },
+    "drop_landmark": {
+      "type": "input",
+      "prompt": "Delivery landmark or gate (e.g. Akwa Total Gate):",
+      "saveAs": "landmark",
+      "next": "order_confirm",
+      "example": "Akwa Total Gate",
+      "validation": { "kind": "text", "pattern": "^.{3,40}$" },
+      "errorMessage": "Enter a short landmark (3-40 chars)."
+    },
+    "order_confirm": {
+      "type": "action",
+      "handler": "place_order",
+      "end": true
+    },
+    "track_input": {
+      "type": "input",
+      "prompt": "Enter Order ID (e.g. ORD-402):",
+      "saveAs": "order_id",
+      "next": "track_result",
+      "example": "ORD-402",
+      "validation": { "kind": "code", "pattern": "^ORD-[0-9]{3}$" },
+      "errorMessage": "Expected format: ORD-402"
+    },
+    "track_result": {
+      "type": "action",
+      "handler": "track_order",
+      "end": true
+    },
+    "craving_input": {
+      "type": "input",
+      "prompt": "Describe craving & budget (e.g. spicy protein under 3500):",
+      "saveAs": "craving",
+      "next": "craving_result",
+      "example": "spicy high protein under 3500",
+      "validation": { "kind": "text", "pattern": "^.{3,80}$" },
+      "errorMessage": "Text too short or too long (3-80)."
+    },
+    "craving_result": {
+      "type": "action",
+      "handler": "match_craving",
+      "useAiCompression": true,
+      "end": true
+    },
+    "promo_input": {
+      "type": "input",
+      "prompt": "Enter voucher code (e.g. KIRO26):",
+      "saveAs": "voucher",
+      "next": "promo_result",
+      "example": "KIRO26",
+      "validation": { "kind": "code", "pattern": "^[A-Z0-9]{4,12}$" },
+      "errorMessage": "Code must be 4-12 letters/digits."
+    },
+    "promo_result": {
+      "type": "action",
+      "handler": "check_voucher",
+      "end": true
+    }
+  }
+}

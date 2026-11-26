@@ -24,6 +24,7 @@ for _sp in (ROOT / ".venv" / "Lib" / "site-packages", *sorted((ROOT / ".venv" / 
     if _sp.is_dir():
         site.addsitedir(str(_sp))
 
+from core.gsm_compressor import BODY_BUDGET, compress, is_gsm7, paginate  # noqa: E402
 from core.manifest_loader import AppRegistry  # noqa: E402
 from core.session_engine import SessionEngine, SessionStore  # noqa: E402
 from scripts.check_skeleton_purity import audit  # noqa: E402
@@ -40,16 +41,29 @@ TOOLS = [
     },
     {
         "name": "simulate_ussd_flow",
-        "description": ("Dial a USSD shortcode (e.g. *384*1#) or app id and send inputs one by one, like a phone. "
+        "description": ("Dial a USSD shortcode (e.g. *384*1# NightRx or *384*2# Bite2G) or app id and send inputs one by one. "
                         "Returns every CON/END frame with its character count, GSM-7 check and compression mode."),
         "inputSchema": {
             "type": "object",
             "properties": {
-                "shortcode": {"type": "string", "description": "Service code such as *384*2#, or an app id."},
+                "shortcode": {"type": "string", "description": "Service code such as *384*1# or *384*2#, or an app id."},
                 "inputs": {"type": "array", "items": {"type": "string"}, "maxItems": 30,
-                           "description": "Inputs after dialing, e.g. [\"2\", \"25000\", \"5\"]. Use 99 for next page."},
+                           "description": "Inputs after dialing, e.g. [\"3\", \"RX-2026-860\"]. Use 99 for next page."},
             },
             "required": ["shortcode"],
+            "additionalProperties": False,
+        },
+    },
+    {
+        "name": "compress_to_gsm7",
+        "description": "Run any free-form text through the 2G GSM-7 160-character semantic compressor and paginator.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "text": {"type": "string", "description": "Raw text or answer to compress into <= 160-char GSM-7 USSD screens."},
+                "use_ai": {"type": "boolean", "description": "Whether to try the LLM rewrite (1.8s timeout) before deterministic fallback."},
+            },
+            "required": ["text"],
             "additionalProperties": False,
         },
     },
@@ -89,6 +103,16 @@ class UssdTools:
             if frame.prefix == "END":
                 break
         return {"app": app.manifest.id, "frames": frames, "ended": frames[-1]["raw_response"].startswith("END")}
+
+    def compress_to_gsm7(self, text: str, use_ai: bool = True) -> dict[str, Any]:
+        content, telemetry = asyncio.run(compress(text, BODY_BUDGET, use_ai, {"immediately": "immed.", "minutes": "min"}))
+        pages = paginate(content, "\n99. More", BODY_BUDGET)
+        frames = [
+            f"{'CON' if idx < len(pages) - 1 else 'END'} {page}{chr(10) + '99. More' if idx < len(pages) - 1 else ''}"
+            for idx, page in enumerate(pages)
+        ]
+        return {"frames": frames, "page_count": len(frames), "max_chars": max(len(f) for f in frames),
+                "all_gsm7_valid": all(is_gsm7(f) and len(f) <= 160 for f in frames), "telemetry": telemetry}
 
     def audit_skeleton_compliance(self) -> dict[str, Any]:
         purity, manifests = audit(ROOT / "core"), validate_all()

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Replays USSD sessions exactly as Africa's Talking would send them (form-urlencoded, cumulative text).
+# Replays USSD sessions across all 4 apps in Africa's Talking format (form-urlencoded, cumulative text).
 # Usage: BASE_URL=http://127.0.0.1:8000 bash scripts/demo_curl.sh
 set -euo pipefail
 
@@ -17,27 +17,14 @@ ussd() { # ussd <sessionId> <serviceCode> <text>
   printf '\n'
 }
 
-echo "=== AgriPulse *384*1#: plantain price at Douala Sandaga ==="
-SID="ATUid_demo_agri_$RANDOM"
-ussd "$SID" '*384*1#' ''
-ussd "$SID" '*384*1#' '1'
-ussd "$SID" '*384*1#' '1*1'
-ussd "$SID" '*384*1#' '1*1*1'
+echo "=== SIM 1: NightRx 24/7 (*384*1#) — Counterfeit medicine seal check ==="
+ussd "ATUid_rx_$RANDOM" '*384*1#' '3*RX-2026-860'
 
-echo "=== AgriPulse *384*1#: cocoa diagnosis with 99 pagination ==="
-SID="ATUid_demo_cocoa_$RANDOM"
-ussd "$SID" '*384*1#' '2*1'
-ussd "$SID" '*384*1#' '2*1*99'
+echo "=== SIM 2: Bite2G Delivery (*384*2#) — Order 2x Poulet DG with Rider PIN ==="
+ussd "ATUid_bite_$RANDOM" '*384*2#' '1*1*1*2*Akwa Total Gate'
 
-echo "=== Tontine-Check *384*2#: late penalty 25 000 FCFA, 5 days ==="
-SID="ATUid_demo_tontine_$RANDOM"
-ussd "$SID" '*384*2#' ''
-ussd "$SID" '*384*2#' '2'
-ussd "$SID" '*384*2#' '2*25000'
-ussd "$SID" '*384*2#' '2*25000*5'
+echo "=== SIM 3: AgriPulse (*384*3#) — Plantain price at Douala Sandaga ==="
+ussd "ATUid_agri_$RANDOM" '*384*3#' '1*1*1'
 
-echo "=== Tontine-Check *384*2#: tampered receipt ==="
-ussd "ATUid_demo_receipt_$RANDOM" '*384*2#' '4*QT-2026-860'
-
-echo "=== Unknown service code ==="
-ussd "ATUid_demo_unknown_$RANDOM" '*000#' ''
+echo "=== SIM 4: Tontine-Check (*384*4#) — Late penalty 25 000 FCFA, 5 days ==="
+ussd "ATUid_tontine_$RANDOM" '*384*4#' '2*25000*5'

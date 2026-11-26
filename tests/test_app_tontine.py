@@ -1,9 +1,9 @@
-"""End-to-end Tontine-Check (*384*2#) journeys."""
+"""End-to-end Tontine-Check (*384*4#) journeys."""
 from __future__ import annotations
 
 import pytest
 
-APP = "*384*2#"
+APP = "*384*4#"
 
 
 def test_member_turn(dial) -> None:
