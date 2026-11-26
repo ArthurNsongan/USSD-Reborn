@@ -1,31 +1,33 @@
 {
+  "_note": "Fictional demo data: pharmacies, phone numbers, stock, seals and triage texts are not real and are not medical advice.",
+  "disclaimer": "DEMO - not medical advice. Ask a pharmacist or doctor.",
   "sealSecret": "nightrx-gsm-lot-key-2026",
   "pharmacies": {
     "akwa": {
       "name": "St-Martin 24/7 Pharmacy",
       "district": "Akwa Blvd, opp. Central Post",
-      "phone": "+237 699 10 22 40",
+      "phone": "+237 6XX XX 22 40",
       "dutyUntil": "08:00 AM",
       "stockNote": "Insulin, Ventolin, Anti-venom, ORS in stock"
     },
     "bonapriso": {
       "name": "Lagoon Night Pharmacy",
       "district": "Bonapriso Hydrocarbures Jct",
-      "phone": "+237 677 44 19 05",
+      "phone": "+237 6XX XX 19 05",
       "dutyUntil": "08:00 AM",
       "stockNote": "Pediatric kit, Epinephrine, Insulin in stock"
     },
     "makepe": {
       "name": "Makepe Crossroad Pharmacy",
       "district": "Makepe BM, 100m from roundabout",
-      "phone": "+237 694 81 30 12",
+      "phone": "+237 6XX XX 30 12",
       "dutyUntil": "07:30 AM",
       "stockNote": "Malaria ACT, Ventolin, Antibiotics in stock"
     },
     "bastos": {
       "name": "Central Bastos 24/7",
       "district": "Yaounde Bastos Embassy Ave",
-      "phone": "+237 655 09 71 88",
+      "phone": "+237 6XX XX 71 88",
       "dutyUntil": "08:00 AM",
       "stockNote": "Full emergency & cold-chain stock active"
     }

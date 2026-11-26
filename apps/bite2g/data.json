@@ -1,4 +1,5 @@
 {
+  "_note": "Fictional demo data: kitchens, riders, phone numbers (masked 6XX XX) and vouchers are invented.",
   "deliveryFee": 500,
   "kitchens": {
     "mamaput": {
@@ -34,7 +35,7 @@
       "status": "ON MOTO (5 min away)",
       "meal": "Poulet DG + Ripe Plantain x2",
       "rider": "Musa B. (Moto LT-884)",
-      "phone": "+237 690 44 12 09",
+      "phone": "+237 6XX XX 12 09",
       "pin": "84",
       "total": 7500
     },
@@ -42,7 +43,7 @@
       "status": "ON GRILL (packing now)",
       "meal": "Double Smash + Crispy Fries x1",
       "rider": "Assigning nearest rider",
-      "phone": "+237 671 00 52 10",
+      "phone": "+237 6XX XX 52 10",
       "pin": "39",
       "total": 4000
     },
@@ -50,7 +51,7 @@
       "status": "DELIVERED at 21:14",
       "meal": "Szechuan Beef Fire Noodles x1",
       "rider": "Eric T. (PIN verified)",
-      "phone": "+237 655 18 90 02",
+      "phone": "+237 6XX XX 90 02",
       "pin": "17",
       "total": 4000
     }

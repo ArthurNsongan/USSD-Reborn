@@ -7,7 +7,7 @@ APP = "*384*1#"
 
 
 @pytest.mark.parametrize("zone_key, expected", [
-    ("1", ["St-Martin 24/7 Pharmacy", "Akwa Blvd", "+237 699 10 22 40"]),
+    ("1", ["St-Martin 24/7 Pharmacy", "Akwa Blvd", "+237 6XX XX 22 40"]),
     ("2", ["Lagoon Night Pharmacy", "Bonapriso"]),
     ("4", ["Central Bastos 24/7", "Yaounde"]),
 ])
@@ -49,6 +49,13 @@ def test_ai_triage_paginates_and_matches_topic(dial) -> None:
     assert first.context["triage_topic"] == "fever"
     second = dial(APP, "4*high fever 39C child 14kg*99")
     assert second.prefix == "END"
+
+
+def test_health_disclaimer_is_on_home_and_first_triage_page(dial) -> None:
+    assert "Demo only, not medical advice" in dial(APP, "", sid="home").body
+    for i, query in enumerate(["high fever 39C child 14kg", "wheezing", "unknown thing"]):
+        first = dial(APP, f"4*{query}", sid=f"triage-{i}")
+        assert first.page_index == 0 and first.body.startswith("DEMO - not medical advice.")
 
 
 def test_all_night_rx_presets_run(dial, registry) -> None:

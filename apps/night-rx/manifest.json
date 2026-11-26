@@ -54,7 +54,7 @@
   "nodes": {
     "home": {
       "type": "menu",
-      "title": "NightRx 24/7 (*384*1#)",
+      "title": "NightRx 24/7 (*384*1#)\nDemo only, not medical advice",
       "options": [
         { "key": "1", "label": "Open 24/7 pharmacies", "next": "duty_zone" },
         { "key": "2", "label": "Reserve urgent medicine", "next": "hold_zone" },

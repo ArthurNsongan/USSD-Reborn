@@ -69,4 +69,5 @@ def ai_triage(context: dict, data: dict) -> dict:
     hits = sum(1 for k in best["keywords"] if k in query)
     answer = best["answer"] if hits > 0 else data["defaultTriage"]
     topic = best["topic"] if hits > 0 else "general"
-    return {"text": answer, "end": True, "context": {"triage_topic": topic}}
+    # The warning comes first so it is on page 1 even when the answer is paginated with 99.
+    return {"text": f"{data['disclaimer']}\n{answer}", "end": True, "context": {"triage_topic": topic}}

@@ -9,9 +9,11 @@ No SIM card, no account, no API key.
 
 **Through a real telecom gateway:** open the
 [Africa's Talking simulator](https://simulator.africastalking.com:1517/), enter any phone number, choose
-USSD and dial **`*384*69383#`**. The request goes through the Africa's Talking sandbox gateway to our
-Vercel webhook (`https://ussd-reborn.vercel.app/ussd?app=night-rx`, `?app=bite2g`, `?app=agripulse` or `?app=tontine-check`),
-exactly like a live operator session.
+USSD and dial **`*384*69383#`**: it opens **AgriPulse CM**. The request goes through the Africa's Talking
+sandbox gateway to our Vercel webhook (`https://ussd-reborn.vercel.app/ussd?app=agripulse`), exactly like a
+live operator session. The other three apps are not wired to a sandbox code; test them on
+[`/phone`](https://ussd-reborn.vercel.app/phone). Each sandbox channel maps to one app through `?app=`
+(`night-rx`, `bite2g`, `agripulse` or `tontine-check`).
 
 When mobile data is dead, throttled, or unaffordable, the 2G GSM/USSD signaling channel (`*xxx#`) still reaches any basic push-button phone. Traditional USSD gateways require rigid, hand-coded trees for each service. **GhostSignal** is one small, domain-agnostic engine (`core/`, strictly under 400 logical lines) that runs any number of USSD applications purely from declarative JSON manifests. Every screen it emits is a strictly valid `CON`/`END` frame of at most 160 GSM-7 characters, backed by an AI semantic compressor with an instant deterministic local fallback.
 
@@ -159,6 +161,14 @@ cd frontend && npm run build              # TypeScript strict + Vite production 
 | `LLM_API_KEY` | empty | Enables the AI compressor. Without it the deterministic fallback is used |
 | `LLM_MODEL` / `LLM_BASE_URL` | preset | Override the model or point to any OpenAI-compatible endpoint |
 | `LLM_TIMEOUT_SEC` | `1.8` | Hard deadline before the local fallback |
+
+## Data disclaimer
+All four apps run on fictional demo data: pharmacies and their phone numbers, medicine stock, drug seals,
+restaurants, riders, market prices, weather bulletins, tontine members and receipts are invented.
+**NightRx is not a medical service.** Its triage and dosage texts are illustrative only and have not been
+reviewed by a health professional; the USSD home screen and every triage answer say so on the first page.
+In an emergency, contact a doctor, a pharmacist or local emergency services. AgriPulse advice is generic
+guidance, not a substitute for an agricultural extension officer.
 
 ## License
 [MIT](LICENSE)
